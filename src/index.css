@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Remove browser defaults */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  color: #111;
+}
+
+/* Smooth font */
+body {
+  font-family: system-ui, sans-serif;
+}

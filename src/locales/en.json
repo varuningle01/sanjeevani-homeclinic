@@ -1,0 +1,72 @@
+{
+  "welcome": "Welcome to",
+  "clinicName": "Sanjeevani Homeclinic",
+  "doctorName": "Dr. Prashant Ingle",
+  "specialization": "Homeopathic Skin Specialist",
+  "nav": {
+    "home": "Home",
+    "about": "About Doctor",
+    "gallery": "Gallery",
+    "appointment": "Book Appointment",
+    "contact": "Contact"
+  },
+  "hero": {
+    "tagline": "Expert Homeopathic Treatment for Skin Conditions",
+    "subtitle": "Specializing in Eczema & Psoriasis Treatment",
+    "cta": "Book Appointment",
+    "learnMore": "Learn More"
+  },
+  "services": {
+    "title": "Our Specializations",
+    "eczema": "Eczema Treatment",
+    "psoriasis": "Psoriasis Treatment",
+    "skinAllergy": "Skin Allergies",
+    "acne": "Acne & Pimples"
+  },
+  "about": {
+    "title": "About Dr. Prashant Ingle",
+    "subtitle": "Experienced Homeopathic Skin Specialist",
+    "experience": "Years of Experience",
+    "patients": "Patients Treated",
+    "qualification": "Qualifications"
+  },
+  "gallery": {
+    "title": "Treatment Results",
+    "subtitle": "Before & After Gallery",
+    "before": "Before",
+    "after": "After"
+  },
+  "appointment": {
+    "title": "Book an Appointment",
+    "name": "Full Name",
+    "phone": "Phone Number",
+    "date": "Preferred Date",
+    "problem": "Describe Your Problem",
+    "submit": "Request Appointment"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "address": "Address",
+    "phone": "Phone",
+    "timings": "Clinic Timings",
+    "morning": "Morning",
+    "evening": "Evening",
+    "closed": "Sunday Closed"
+  },
+  "footer": {
+    "rights": "All Rights Reserved"
+  },
+  "status": {
+    "online": "Clinic Open",
+    "offline": "Clinic Closed"
+  },
+  "admin": {
+    "login": "Admin Login",
+    "dashboard": "Dashboard",
+    "patients": "Patients",
+    "appointments": "Appointments",
+    "logout": "Logout",
+    "search": "Search patients...",
+    "availability": "Clinic Availability"
+  }
+}
