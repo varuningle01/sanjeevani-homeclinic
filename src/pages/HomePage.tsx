@@ -48,7 +48,7 @@ function HomePage() {
                 to="/about"
                 className="border border-primary text-primary px-6 py-3 rounded-lg hover:bg-primary/10 transition"
               >
-                {t("learnMore")}
+                {t("hero.learnMore")}
               </Link>
             </div>
           </div>
