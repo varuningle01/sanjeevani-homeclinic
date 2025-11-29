@@ -46,12 +46,19 @@
     "submit": "अपॉइंटमेंट विनंती करा"
   },
   "contact": {
-    "title": "संपर्क करा",
+    "title": "संपर्क",
     "address": "पत्ता",
+    "addressLine1": "संजीवनी होमिओ क्लिनिक, भांबुरकर हॉस्पिटलजवळ",
+    "addressLine2": "अकोला, महाराष्ट्र – ४४४००१",
     "phone": "फोन",
-    "timings": "क्लिनिक वेळ",
+    "phoneNumber": "९८२२५६६९४९",
+    "timings": "क्लिनिक वेळा",
     "morning": "सकाळ",
-    "evening": "संध्याकाळ",
+    "morningTime": "१०:०० AM – १:०० PM",
+    "afternoon": "दुपार",
+    "afternoonTime": "२:०० PM – ६:०० PM",
+    "evening": "सायंकाळ",
+    "eveningTime": "६:०० PM – १०:०० PM",
     "closed": "रविवार बंद"
   },
   "footer": {

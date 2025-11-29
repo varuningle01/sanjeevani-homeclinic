@@ -48,10 +48,17 @@
   "contact": {
     "title": "संपर्क करें",
     "address": "पता",
+    "addressLine1": "संजिवनी होमियो क्लिनिक, भांबुरकर अस्पताल के पास",
+    "addressLine2": "अकोला, महाराष्ट्र – ४४४००१",
     "phone": "फोन",
-    "timings": "क्लिनिक का समय",
+    "phoneNumber": "९८२२५६६९४९",
+    "timings": "क्लिनिक समय",
     "morning": "सुबह",
+    "morningTime": "१०:०० AM – १:०० PM",
+    "afternoon": "दोपहर",
+    "afternoonTime": "२:०० PM – ६:०० PM",
     "evening": "शाम",
+    "eveningTime": "६:०० PM – १०:०० PM",
     "closed": "रविवार बंद"
   },
   "footer": {

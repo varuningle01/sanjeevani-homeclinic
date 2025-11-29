@@ -42,19 +42,30 @@
     "phone": "Phone Number",
     "date": "Preferred Date",
     "problem": "Describe Your Problem",
-    "submit": "Request Appointment"
+    "submit": "Request Appointment",
+    "successTitle": "Appointment Request Submitted!",
+    "successMessage": "Please ensure you reach the clinic on or before your appointment time.”"
   },
   "contact": {
     "title": "Contact Us",
     "address": "Address",
+    "addressLine1": "Sanjeevani HomeoClinic, near Bhamburkar Hospital",
+    "addressLine2": "Akola, Maharashtra – 444001",
     "phone": "Phone",
+    "phoneNumber": "9822566949",
     "timings": "Clinic Timings",
     "morning": "Morning",
+    "morningTime": "10:00 AM – 1:00 PM",
+    "afternoon": "Afternoon",
+    "afternoonTime": "2:00 PM – 6:00 PM",
     "evening": "Evening",
+    "eveningTime": "6:00 PM – 10:00 PM",
     "closed": "Sunday Closed"
   },
   "footer": {
-    "rights": "All Rights Reserved"
+    "rights": "All Rights Reserved",
+    "quickLinks": "Quick Links",
+    "followUs": "Follow Us"
   },
   "status": {
     "online": "Clinic Open",
@@ -67,6 +78,9 @@
     "appointments": "Appointments",
     "logout": "Logout",
     "search": "Search patients...",
-    "availability": "Clinic Availability"
+    "availability": "Clinic Availability",
+    "username": "Username",
+    "password": "Password",
+    "invalid": "Invalid credentials"
   }
 }

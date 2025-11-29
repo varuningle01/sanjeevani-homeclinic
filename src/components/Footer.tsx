@@ -27,37 +27,58 @@ export default function Footer() {
         <div className="space-y-4">
           <h4 className="font-semibold text-lg">{t("contact.title")}</h4>
 
+          {/* Address */}
           <div className="flex items-start gap-3 text-sm leading-relaxed">
-            <FaMapMarkerAlt className="text-primary mt-1" />
+            <FaMapMarkerAlt className="text-red-500 mt-1" />
             <p>
-              {/* Static address, but label translated */}
-              <strong>{t("contact.address")}: </strong> <br />
-              Main Road, Near Bus Stand, <br />
-              Sangli, Maharashtra 416416
+              <strong>{t("contact.address")}:</strong> <br />
+              {t("contact.addressLine1")} <br />
+              {t("contact.addressLine2")}
             </p>
           </div>
 
+          {/* Phone */}
           <div className="flex items-start gap-3 text-sm leading-relaxed">
-            <FaPhoneAlt className="text-primary mt-1" />
+            <FaPhoneAlt className="text-red-500 mt-1" />
             <p>
               <strong>{t("contact.phone")}:</strong> <br />
-              +91 98765 43210 <br />
-              +91 98765 43211
+              +91 {t("contact.phoneNumber")}
             </p>
           </div>
 
+          {/* Timings */}
+          {/* Timings */}
+          {/* Timings */}
           <div className="flex items-start gap-3 text-sm leading-relaxed">
-            <FaClock className="text-primary mt-1" />
-            <p>
-              <strong>{t("contact.timings")}:</strong> <br />
-              Mon–Sat: 10:00 AM – 8:00 PM
-            </p>
+            <FaClock className="text-red-500 mt-1" />
+
+            <div className="space-y-1">
+              <p>
+                <span className="font-medium">{t("contact.morning")}:</span>{" "}
+                {t("contact.morningTime")}
+              </p>
+              <p>
+                <span className="font-medium">{t("contact.afternoon")}:</span>{" "}
+                {t("contact.afternoonTime")}
+              </p>
+              <p>
+                <span className="font-medium">{t("contact.evening")}:</span>{" "}
+                {t("contact.eveningTime")}
+              </p>
+
+              <p className="text-red-400 font-semibold pt-1">
+                {t("contact.closed")}
+              </p>
+            </div>
           </div>
         </div>
 
         {/* Quick Links */}
         <div>
-          <h4 className="font-semibold text-lg mb-4">Quick Links</h4>
+          <h4 className="font-semibold text-lg mb-4">
+            {t("footer.quickLinks")}
+          </h4>
+
           <div className="space-y-2 text-sm flex flex-col">
             <Link to="/" className="hover:text-gray-300 transition">
               {t("nav.home")}
@@ -82,22 +103,22 @@ export default function Footer() {
 
         {/* Socials */}
         <div>
-          <h4 className="font-semibold text-lg mb-4">Follow Us</h4>
+          <h4 className="font-semibold text-lg mb-4">{t("footer.followUs")}</h4>
           <div className="flex gap-4 text-2xl">
-            <a href="#" className="hover:text-primary transition">
+            <a href="#" className="hover:text-red-500 transition">
               <FaFacebook />
             </a>
-            <a href="#" className="hover:text-primary transition">
+            <a href="#" className="hover:text-red-500 transition">
               <FaInstagram />
             </a>
-            <a href="#" className="hover:text-primary transition">
+            <a href="#" className="hover:text-red-500 transition">
               <FaYoutube />
             </a>
           </div>
         </div>
       </div>
 
-      {/* Google Maps */}
+      {/* Google Map */}
       <div className="max-w-[1300px] mx-auto px-4 mt-12">
         <div className="h-60 sm:h-72 md:h-80 overflow-hidden rounded-xl shadow-lg border border-white/10">
           <iframe
