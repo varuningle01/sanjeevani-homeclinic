@@ -2,8 +2,6 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import type { RootState } from "../store/store";
 import doctorPhoto from "../assets/prashant-doctor.png";
 
 /* --- Service Images (High-Quality) --- */
