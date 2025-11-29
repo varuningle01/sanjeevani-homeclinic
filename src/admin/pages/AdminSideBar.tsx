@@ -44,21 +44,22 @@ const AdminSideBar = ({ open, setOpen }: SidebarProps) => {
   return (
     <aside
       className={`
-        fixed z-40 inset-y-0 left-0 w-64 bg-gray-900 text-white 
+        fixed z-40 inset-y-0 left-0 w-64 bg-white shadow-xl 
+        border-r border-gray-200
         transform transition-transform duration-300
         md:static md:translate-x-0 
         ${open ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
       `}
     >
       {/* Header */}
-      <div className="p-4 border-b border-gray-800 flex items-center gap-2">
-        <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center">
-          <span className="text-white font-bold">S</span>
+      <div className="p-5 border-b border-gray-200 flex items-center gap-3">
+        <div className="w-10 h-10 bg-teal-600 text-white rounded-full flex items-center justify-center font-bold text-lg shadow">
+          S
         </div>
-        <span className="font-bold">{t("clinicName")}</span>
+        <span className="font-semibold text-gray-700">{t("clinicName")}</span>
       </div>
 
-      {/* Nav */}
+      {/* Navigation */}
       <nav className="flex-1 p-4 overflow-y-auto">
         <ul className="space-y-2 pb-20">
           {navItems.map((item) => {
@@ -69,16 +70,22 @@ const AdminSideBar = ({ open, setOpen }: SidebarProps) => {
                 <Link
                   onClick={() => setOpen(false)}
                   to={item.path}
-                  className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors
+                  className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all
                     ${
                       isActive
-                        ? "bg-red-600 text-white"
-                        : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                        ? "bg-teal-50 text-teal-700 border border-teal-200 shadow-sm"
+                        : "text-gray-600 hover:bg-gray-100 hover:text-teal-700"
                     }
                   `}
                 >
-                  <span className="text-lg">{item.icon}</span>
-                  <span>{item.label}</span>
+                  <span
+                    className={`text-lg ${
+                      isActive ? "text-teal-600" : "text-gray-500"
+                    }`}
+                  >
+                    {item.icon}
+                  </span>
+                  <span className="font-medium">{item.label}</span>
                 </Link>
               </li>
             );
@@ -86,33 +93,36 @@ const AdminSideBar = ({ open, setOpen }: SidebarProps) => {
         </ul>
       </nav>
 
-      {/* Availability */}
-      <div className="p-4 border-t border-gray-800">
+      {/* Availability Toggle */}
+      <div className="p-4 border-t border-gray-200">
         <p className="text-xs text-gray-500 mb-2">{t("admin.availability")}</p>
+
         <button
           onClick={() => setIsOnline(!isOnline)}
-          className={`w-full py-2 rounded-lg font-medium transition-colors
+          className={`w-full py-2.5 rounded-lg font-medium transition-all shadow-sm
             ${
               isOnline
-                ? "bg-green-600 hover:bg-green-700"
-                : "bg-red-600 hover:bg-red-700"
-            }`}
+                ? "bg-teal-600 text-white hover:bg-teal-700"
+                : "bg-red-500 text-white hover:bg-red-600"
+            }
+          `}
         >
           {isOnline ? t("status.online") : t("status.offline")}
         </button>
       </div>
 
       {/* Logout */}
-      <div className="p-4 border-t border-gray-800">
+      <div className="p-4 border-t border-gray-200">
         <button
           onClick={() => {
             handleLogout();
             setOpen(false);
           }}
-          className="w-full flex items-center gap-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition-colors"
+          className="w-full flex items-center gap-3 py-2.5 rounded-lg 
+          text-gray-600 hover:bg-gray-100 hover:text-red-600 transition-all"
         >
-          <FiLogOut />
-          {t("admin.logout")}
+          <FiLogOut className="text-lg" />
+          <span className="font-medium">{t("admin.logout")}</span>
         </button>
       </div>
     </aside>

@@ -22,119 +22,120 @@ export default function Appointment() {
     setSubmitted(true);
   };
 
-  // Appointment form UI
   return (
     <>
       <Navbar />
-      <div className="py-12">
-        <div className="max-w-md mx-auto px-4">
-          <h1 className="text-3xl font-bold text-center mb-8 text-gray-900">
+
+      <div className="py-12 bg-[#F4FAFB] min-h-screen">
+        <div className="max-w-lg mx-auto px-4">
+          {/* Heading */}
+          <h1 className="text-3xl md:text-4xl font-bold text-center text-[#0B7A75] mb-3">
             {t("appointment.title")}
           </h1>
 
+          <p className="text-center text-gray-600 mb-10">
+            {t("appointment.subtitle")}
+          </p>
+
+          {/* Form Container */}
           <form
             onSubmit={handleSubmit}
-            className="bg-white rounded-xl shadow-sm p-6"
+            className="bg-white shadow-md border border-gray-200 rounded-2xl p-6 space-y-5 transition"
           >
-            <div className="space-y-4">
-              {/* Name */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t("appointment.name")}
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg 
-                focus:ring-2 focus:ring-red-500 focus:border-transparent 
-                outline-none transition"
-                />
-              </div>
-
-              {/* Phone */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t("appointment.phone")}
-                </label>
-                <input
-                  type="tel"
-                  required
-                  value={formData.phone}
-                  onChange={(e) =>
-                    setFormData({ ...formData, phone: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg 
-                focus:ring-2 focus:ring-red-500 focus:border-transparent 
-                outline-none transition"
-                />
-              </div>
-
-              {/* Date */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t("appointment.date")}
-                </label>
-                <input
-                  type="date"
-                  required
-                  value={formData.date}
-                  onChange={(e) =>
-                    setFormData({ ...formData, date: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg 
-                focus:ring-2 focus:ring-red-500 focus:border-transparent 
-                outline-none transition"
-                />
-              </div>
-
-              {/* Problem */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t("appointment.problem")}
-                </label>
-                <textarea
-                  required
-                  rows={4}
-                  value={formData.problem}
-                  onChange={(e) =>
-                    setFormData({ ...formData, problem: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg 
-                focus:ring-2 focus:ring-red-500 focus:border-transparent 
-                outline-none transition resize-none"
-                />
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold 
-              hover:bg-red-700 transition-colors duration-200"
-              >
-                {t("appointment.submit")}
-              </button>
+            {/* Name */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {t("appointment.name")}
+              </label>
+              <input
+                type="text"
+                required
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+                className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg 
+                focus:ring-2 focus:ring-[#0B7A75] focus:border-[#0B7A75] outline-none transition"
+              />
             </div>
+
+            {/* Phone */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {t("appointment.phone")}
+              </label>
+              <input
+                type="tel"
+                required
+                value={formData.phone}
+                onChange={(e) =>
+                  setFormData({ ...formData, phone: e.target.value })
+                }
+                className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg 
+                focus:ring-2 focus:ring-[#0B7A75] focus:border-[#0B7A75] outline-none transition"
+              />
+            </div>
+
+            {/* Date */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {t("appointment.date")}
+              </label>
+              <input
+                type="date"
+                required
+                value={formData.date}
+                onChange={(e) =>
+                  setFormData({ ...formData, date: e.target.value })
+                }
+                className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg 
+                focus:ring-2 focus:ring-[#0B7A75] focus:border-[#0B7A75] outline-none transition"
+              />
+            </div>
+
+            {/* Problem */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {t("appointment.problem")}
+              </label>
+              <textarea
+                required
+                rows={4}
+                value={formData.problem}
+                onChange={(e) =>
+                  setFormData({ ...formData, problem: e.target.value })
+                }
+                className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg 
+                focus:ring-2 focus:ring-[#0B7A75] focus:border-[#0B7A75] outline-none transition resize-none"
+              />
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="w-full bg-[#0B7A75] text-white py-3 rounded-lg text-lg font-semibold 
+              hover:bg-[#085f5a] transition"
+            >
+              {t("appointment.submit")}
+            </button>
           </form>
+
+          {/* Success Message */}
           {submitted && (
             <div className="mt-6">
-              <div className="max-w-md mx-auto px-4">
-                <div className="bg-green-100 border border-green-300 text-green-800 rounded-lg p-4 text-center shadow-sm">
-                  <p className="font-semibold">
-                    {t("appointment.successTitle")}
-                  </p>
-                  <p className="text-sm mt-1">
-                    {t("appointment.successMessage")}
-                  </p>
-                </div>
+              <div className="bg-[#E6F7F7] border border-[#0B7A75]/30 text-[#0B7A75] rounded-xl p-4 text-center shadow-sm">
+                <p className="font-semibold text-lg">
+                  {t("appointment.successTitle")}
+                </p>
+                <p className="text-sm mt-1">
+                  {t("appointment.successMessage")}
+                </p>
               </div>
             </div>
           )}
         </div>
       </div>
+
       <Footer />
     </>
   );

@@ -4,78 +4,108 @@ import { useTranslation } from "react-i18next";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import doctorPhoto from "../assets/prashant-doctor.png";
+import { FiCheckCircle } from "react-icons/fi";
 
 const AboutPage = () => {
   const { t } = useTranslation();
   const doctor = useSelector((state: RootState) => state.clinic.doctor);
+
   return (
     <>
       <Navbar />
-      <div className="py-12">
-        <div className="max-w-4xl mx-auto px-4">
-          {/* Header */}
-          <h1 className="text-3xl font-bold text-center mb-2">
+
+      {/* PAGE WRAPPER */}
+      <div className="py-12 bg-white">
+        <div className="max-w-5xl mx-auto px-4">
+          {/* Page Header */}
+          <h1 className="text-3xl md:text-4xl font-bold text-center text-[#0B7A75]">
             {t("about.title")}
           </h1>
-          <p className="text-gray-600 text-center mb-12">
+          <p className="text-gray-600 text-center mt-2 mb-12">
             {t("about.subtitle")}
           </p>
 
-          {/* Doctor Profile */}
-          <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+          {/* DOCTOR CARD */}
+          <div className="bg-white shadow-md rounded-2xl overflow-hidden border border-gray-200">
             <div className="md:flex">
-              <div className="md:w-1/3">
+              {/* Doctor Image */}
+              <div className="md:w-1/3 bg-gray-100">
                 <img
                   src={doctorPhoto}
                   alt={doctor.name}
                   className="w-full h-64 md:h-full object-cover"
                 />
               </div>
+
+              {/* Doctor Info */}
               <div className="md:w-2/3 p-8">
-                <h2 className="text-2xl font-bold text-[var(--primary)] mb-2">
+                <h2 className="text-2xl font-bold text-[#0B7A75] mb-1">
                   {doctor.name}
                 </h2>
-                <p className="text-gray-600 mb-4">{doctor.qualification}</p>
 
-                <div className="flex gap-6 mb-6">
+                <p className="text-gray-600 text-sm mb-4">
+                  {doctor.qualification}
+                </p>
+
+                {/* Stats */}
+                <div className="flex gap-10 mb-6">
                   <div>
-                    <p className="text-2xl font-bold text-[var(--primary)]">
+                    <p className="text-3xl font-extrabold text-[#0B7A75]">
                       {doctor.experience}+
                     </p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-600">
                       {t("about.experience")}
                     </p>
                   </div>
+
                   <div>
-                    <p className="text-2xl font-bold text-[var(--primary)]">
+                    <p className="text-3xl font-extrabold text-[#0B7A75]">
                       {doctor.patientsCount.toLocaleString()}+
                     </p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-600">
                       {t("about.patients")}
                     </p>
                   </div>
                 </div>
 
+                {/* About Doctor */}
                 <p className="text-gray-700 leading-relaxed">{doctor.about}</p>
               </div>
             </div>
           </div>
 
-          {/* Specializations */}
-          <div className="mt-12">
-            <h3 className="text-xl font-bold mb-6">{t("services.title")}</h3>
-            <div className="grid grid-cols-2 gap-4">
-              {["eczema", "psoriasis", "skinAllergy", "acne"].map((key) => (
-                <div key={key} className="bg-gray-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-[var(--primary)]">
+          {/* SPECIALIZATIONS SECTION */}
+          <div className="mt-14">
+            <h3 className="text-2xl font-bold text-[#0B7A75] mb-6">
+              {t("services.title")}
+            </h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+              {[
+                "eczema",
+                "psoriasis",
+                "skinAllergy",
+                "acne",
+                "vitiligo",
+                "hairfall",
+                "fungal",
+                "urticaria",
+              ].map((key) => (
+                <div
+                  key={key}
+                  className="flex items-center gap-3 bg-[#F4FAFB] border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition"
+                >
+                  <FiCheckCircle className="text-[#0B7A75] text-2xl" />
+                  <p className="font-medium text-gray-800">
                     {t(`services.${key}`)}
-                  </h4>
+                  </p>
                 </div>
               ))}
             </div>
           </div>
         </div>
       </div>
+
       <Footer />
     </>
   );

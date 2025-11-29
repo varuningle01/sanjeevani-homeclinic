@@ -28,7 +28,7 @@ function Navbar() {
       {/* Availability Bar */}
       <div
         className={`text-center py-2 text-white text-sm ${
-          isOnline ? "bg-green-600" : "bg-red-600"
+          isOnline ? "bg-[#1c9c7c]" : "bg-red-500"
         }`}
       >
         {isOnline ? t("status.online") : t("status.offline")}
@@ -36,36 +36,39 @@ function Navbar() {
 
       {/* MAIN NAV */}
       <div className="w-full px-4 md:px-10 py-4 flex items-center justify-between">
-        {/* Logo Section */}
+        {/* Logo */}
         <Link className="flex items-center gap-3" to="/">
-          <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg">
+          <div className="w-10 h-10 bg-[#0B7A75] text-white rounded-full flex items-center justify-center font-bold text-lg">
             S
           </div>
+
           <div>
-            <h1 className="text-lg font-bold leading-tight">
+            <h1 className="text-lg font-bold leading-tight text-gray-900">
               {t("clinicName")}
             </h1>
-            <p className="text-sm text-gray-500 -mt-1">{t("doctorName")}</p>
+            <p className="text-sm text-gray-500 -mt-0.5">{t("doctorName")}</p>
           </div>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6 text-[16px]">
+        <nav className="hidden md:flex items-center gap-8 text-[16px] font-medium">
           {navItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
               className={`relative pb-1 transition ${
                 isActive(item.path)
-                  ? "text-primary font-semibold"
-                  : "hover:text-primary"
+                  ? "text-[#0B7A75] font-semibold"
+                  : "text-gray-700 hover:text-[#0B7A75]"
               }`}
             >
               {item.label}
+
+              {/* Underline animation */}
               {isActive(item.path) && (
                 <motion.div
                   layoutId="active-pill"
-                  className="absolute left-0 right-0 -bottom-1 h-[2px] bg-primary rounded-full"
+                  className="absolute left-0 right-0 -bottom-1 h-[2px] bg-[#0B7A75] rounded-full"
                   transition={{ type: "spring", stiffness: 350, damping: 30 }}
                 />
               )}
@@ -73,18 +76,19 @@ function Navbar() {
           ))}
         </nav>
 
-        {/* Desktop Language Switch */}
+        {/* Language Switcher Desktop */}
         <select
           value={i18n.language}
           onChange={(e) => i18n.changeLanguage(e.target.value)}
-          className="hidden md:block bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-md px-3 py-1.5 shadow-sm hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40 transition"
+          className="hidden md:block bg-white border border-gray-300 text-gray-700 text-sm rounded-md px-3 py-1.5 shadow-sm 
+          focus:outline-none focus:ring-2 focus:ring-[#0B7A75]/40 transition"
         >
           <option value="en">English</option>
           <option value="hi">हिंदी</option>
           <option value="mr">मराठी</option>
         </select>
 
-        {/* Mobile Toggle Button */}
+        {/* Mobile Menu Toggle */}
         <motion.button
           className="md:hidden"
           onClick={() => setOpen(!open)}
@@ -95,7 +99,7 @@ function Navbar() {
         </motion.button>
       </div>
 
-      {/* MOBILE MENU (Framer Motion Animated) */}
+      {/* MOBILE MENU */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -113,19 +117,20 @@ function Navbar() {
                   onClick={() => setOpen(false)}
                   className={`transition ${
                     isActive(item.path)
-                      ? "text-primary font-semibold"
-                      : "hover:text-primary"
+                      ? "text-[#0B7A75] font-semibold"
+                      : "text-gray-700 hover:text-[#0B7A75]"
                   }`}
                 >
                   {item.label}
                 </Link>
               ))}
 
-              {/* Mobile Language Selector */}
+              {/* Language Selector Mobile */}
               <select
                 value={i18n.language}
                 onChange={(e) => i18n.changeLanguage(e.target.value)}
-                className="bg-gray-100 border border-gray-300 text-gray-700 text-base rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition"
+                className="bg-gray-100 border border-gray-300 text-gray-700 text-base rounded-md px-3 py-2 shadow-sm 
+                focus:outline-none focus:ring-2 focus:ring-[#0B7A75]/40 transition"
               >
                 <option value="en">English</option>
                 <option value="hi">हिंदी</option>

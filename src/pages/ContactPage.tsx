@@ -7,56 +7,57 @@ const ContactPage = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="bg-gray-50 min-h-screen flex flex-col">
+    <div className="bg-[#F4FAFB] min-h-screen flex flex-col">
       <Navbar />
 
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           {/* Title */}
-          <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">
+          <h1 className="text-4xl mb-10 font-bold text-center mb-2 text-[#0B7A75]">
             {t("contact.title")}
           </h1>
 
           <div className="grid lg:grid-cols-2 gap-10">
             {/* LEFT INFO CARDS */}
             <div className="space-y-6">
-              {/* Address */}
-              <div className="bg-white shadow-md hover:shadow-lg p-6 rounded-2xl transition">
+              {/* Address Card */}
+              <div className="bg-white border border-gray-200 shadow-sm hover:shadow-md p-6 rounded-2xl transition">
                 <div className="flex items-center gap-3 mb-3">
-                  <FiMapPin className="text-red-600 text-2xl" />
-                  <h3 className="font-semibold text-red-600 text-lg">
+                  <FiMapPin className="text-teal-700 text-2xl" />
+                  <h3 className="font-semibold text-teal-700 text-lg">
                     {t("contact.address")}
                   </h3>
                 </div>
 
                 <p className="text-gray-700 leading-relaxed">
-                  {t("contact.addressLine1")} <br />
+                  {t("contact.addressLine1")}
+                  <br />
                   {t("contact.addressLine2")}
                 </p>
               </div>
 
-              {/* Phone */}
-              <div className="bg-white shadow-md hover:shadow-lg p-6 rounded-2xl transition">
+              {/* Phone Card */}
+              <div className="bg-white border border-gray-200 shadow-sm hover:shadow-md p-6 rounded-2xl transition">
                 <div className="flex items-center gap-3 mb-3">
-                  <FiPhone className="text-red-600 text-2xl" />
-                  <h3 className="font-semibold text-red-600 text-lg">
+                  <FiPhone className="text-teal-700 text-2xl" />
+                  <h3 className="font-semibold text-teal-700 text-lg">
                     {t("contact.phone")}
                   </h3>
                 </div>
 
                 <a
                   href={`tel:${t("contact.phoneNumber")}`}
-                  className="text-gray-700 hover:text-red-600 text-lg font-medium"
+                  className="text-gray-700 hover:text-teal-700 text-lg font-medium transition"
                 >
                   {t("contact.phoneNumber")}
                 </a>
               </div>
 
-              {/* Timings */}
-              <div className="bg-white shadow-md hover:shadow-lg p-6 rounded-2xl transition">
+              {/* Timings Card */}
+              <div className="bg-white border border-gray-200 shadow-sm hover:shadow-md p-6 rounded-2xl transition">
                 <div className="flex items-center gap-3 mb-3">
-                  <FiClock className="text-red-600 text-2xl" />
-                  <h3 className="font-semibold text-red-600 text-lg">
+                  <FiClock className="text-teal-700 text-2xl" />
+                  <h3 className="font-semibold text-teal-700 text-lg">
                     {t("contact.timings")}
                   </h3>
                 </div>
@@ -86,8 +87,8 @@ const ContactPage = () => {
               </div>
             </div>
 
-            {/* RIGHT – MAP */}
-            <div className="w-full h-80 lg:h-full rounded-2xl overflow-hidden shadow-md">
+            {/* MAP SECTION */}
+            <div className="w-full h-80 lg:h-full rounded-2xl overflow-hidden shadow-md border border-gray-200">
               <iframe
                 title="clinic-location"
                 src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3731.800171959041!2d77.01160519999999!3d20.718337599999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjDCsDQzJzA2LjAiTiA3N8KwMDAnNDEuOCJF!5e0!3m2!1sen!2sin!4v1764363802006!5m2!1sen!2sin"

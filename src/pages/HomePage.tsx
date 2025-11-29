@@ -6,11 +6,12 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../store/store";
 import doctorPhoto from "../assets/prashant-doctor.png";
 
+/* --- Service Images (High-Quality) --- */
 const serviceData = [
   {
     key: "psoriasis",
     image:
-      "https://ysm-res.cloudinary.com/image/upload/c_fill%2Cf_auto%2Cg_faces%3Aauto%2Ch_960%2Cq_auto%2Cw_1280/v1/yms/prod/010ce533-5df6-441b-9d1d-3ef2a21aeadc",
+      "https://ysm-res.cloudinary.com/image/upload/c_fill,f_auto,g_faces:auto,h_960,q_auto,w_1280/v1/yms/prod/010ce533-5df6-441b-9d1d-3ef2a21aeadc",
   },
   {
     key: "vitiligo",
@@ -20,7 +21,7 @@ const serviceData = [
   {
     key: "eczema",
     image:
-      "https://img.lb.wbmdstatic.com/vim/live/webmd/consumer_assets/site_images/articles/health_tools/visual_guide_to_eczema_slideshow/1800ss_science_source_rm_eczema_on_hand.jpg?output-quality=100&resize=728px%3A%2A",
+      "https://img.lb.wbmdstatic.com/vim/live/webmd/consumer_assets/site_images/articles/health_tools/visual_guide_to_eczema_slideshow/1800ss_science_source_rm_eczema_on_hand.jpg",
   },
   {
     key: "acne",
@@ -44,8 +45,7 @@ const serviceData = [
   },
   {
     key: "urticaria",
-    image:
-      "https://www.houstonent.com/hubfs/shutterstock_2021018495%20%281%29.jpg",
+    image: "https://www.houstonent.com/hubfs/shutterstock_2021018495%20(1).jpg",
   },
 ];
 
@@ -54,41 +54,44 @@ function HomePage() {
   const doctor = useSelector((state: RootState) => state.clinic.doctor);
 
   return (
-    <div className="bg-white w-full">
+    <div className="bg-[#f0fdfa] w-full min-h-screen">
       <Navbar />
 
-      {/* HERO SECTION */}
-      <section className="py-12 md:py-20">
+      {/* ================= HERO ================= */}
+      <section className="py-16 bg-gradient-to-br from-teal-50 via-[#f0fdfa] to-white">
         <div className="max-w-[1300px] mx-auto px-4 md:px-10 grid md:grid-cols-2 gap-12 items-center">
           {/* Left Text */}
           <div>
-            <p className="text-primary font-semibold text-sm mb-2">
+            <p className="text-teal-600 font-semibold text-sm mb-2">
               {t("welcome")}
             </p>
 
-            <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-4">
+            <h1 className="text-3xl md:text-5xl font-extrabold leading-tight text-gray-900 mb-4">
               {t("clinicName")}
             </h1>
 
-            <h2 className="text-xl text-primary font-semibold mb-2">
+            <h2 className="text-xl text-teal-700 font-semibold mb-2">
               {doctor.name}
             </h2>
 
             <p className="text-gray-700 mb-4">{t("specialization")}</p>
 
-            <p className="text-gray-800 text-lg mb-8">{t("hero.tagline")}</p>
+            <p className="text-gray-900 text-lg font-medium mb-8">
+              {t("hero.tagline")}
+            </p>
 
+            {/* CTA Buttons */}
             <div className="flex flex-wrap gap-4">
               <Link
                 to="/appointment"
-                className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primaryDark transition"
+                className="bg-teal-600 text-white px-6 py-3 rounded-lg shadow hover:bg-teal-700 transition font-medium"
               >
                 {t("hero.cta")}
               </Link>
 
               <Link
                 to="/about"
-                className="border border-primary text-primary px-6 py-3 rounded-lg hover:bg-primary/10 transition"
+                className="border border-teal-600 text-teal-700 px-6 py-3 rounded-lg hover:bg-teal-50 transition font-medium"
               >
                 {t("hero.learnMore")}
               </Link>
@@ -97,7 +100,7 @@ function HomePage() {
 
           {/* Doctor Image */}
           <div className="flex justify-center">
-            <div className="w-64 h-80 md:w-80 md:h-96 bg-gray-100 rounded-2xl overflow-hidden shadow">
+            <div className="w-64 h-80 md:w-80 md:h-96 bg-white border border-teal-100 rounded-3xl overflow-hidden shadow-xl">
               <img
                 src={doctorPhoto}
                 alt={doctor.name}
@@ -108,39 +111,44 @@ function HomePage() {
         </div>
       </section>
 
-      {/* SPECIALIZATIONS */}
-      <section className="py-16 bg-gray-50">
-        <div className="w-full max-w-[1300px] mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-12">{t("services.title")}</h2>
+      {/* ================= SERVICES ================= */}
+      <section className="py-16 bg-white">
+        <div className="max-w-[1300px] mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-12">
+            {t("services.title")}
+          </h2>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
             {serviceData.map((item) => (
               <div
                 key={item.key}
-                className="bg-white rounded-xl border shadow-sm hover:shadow-md transition"
+                className="bg-white rounded-2xl border border-teal-100 shadow-sm hover:shadow-lg transition-all"
               >
                 <img
                   src={item.image}
-                  className="w-full h-36 md:h-44 object-cover rounded-t-xl"
                   alt={t(`services.${item.key}`)}
+                  className="w-full h-40 sm:h-48 object-cover rounded-t-2xl"
                 />
-                <p className="p-4 font-semibold">{t(`services.${item.key}`)}</p>
+                <p className="p-4 font-semibold text-gray-900">
+                  {t(`services.${item.key}`)}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-16 bg-primary text-white">
+      {/* ================= CTA STRIP ================= */}
+      <section className="py-16 bg-gradient-to-r from-teal-600 to-teal-700 text-white">
         <div className="max-w-3xl mx-auto text-center px-4">
-          <h2 className="text-3xl font-bold mb-4">{t("appointment.title")}</h2>
-
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            {t("appointment.title")}
+          </h2>
           <p className="mb-8 text-white/90">{t("hero.subtitle")}</p>
 
           <Link
             to="/appointment"
-            className="bg-secondary text-white px-8 py-3 rounded-lg hover:bg-secondary/90 transition"
+            className="bg-white text-teal-700 px-8 py-3 rounded-lg font-semibold shadow hover:bg-teal-50 transition"
           >
             {t("hero.cta")}
           </Link>

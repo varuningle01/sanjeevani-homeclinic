@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/slices/authSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import type { RootState } from "../../store/store";
 
 const AdminLoginPage = () => {
@@ -23,7 +23,6 @@ const AdminLoginPage = () => {
 
     dispatch(login({ username, password }));
 
-    // Check updated state after dispatch
     setTimeout(() => {
       if (
         isAuthenticated ||
@@ -37,21 +36,34 @@ const AdminLoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-white flex items-center justify-center px-4">
       <div className="max-w-md w-full">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-white font-bold text-2xl">S</span>
-          </div>
-          <h1 className="text-2xl font-bold">{t("clinicName")}</h1>
-          <p className="text-gray-600">{t("admin.login")}</p>
+        {/* Back to Home */}
+        <div className="mb-4">
+          <Link
+            to="/"
+            className="inline-block text-teal-700 border border-teal-600 px-4 py-2 rounded-xl text-sm font-medium hover:bg-teal-50 transition shadow-sm"
+          >
+            ← Back to Home
+          </Link>
         </div>
 
-        {/* Form */}
+        {/* Logo + Title */}
+        <div className="text-center mb-10">
+          <div className="w-16 h-16 bg-teal-600 rounded-2xl flex items-center justify-center mx-auto shadow-md">
+            <span className="text-white font-bold text-2xl">S</span>
+          </div>
+
+          <h1 className="text-2xl font-bold mt-4 text-gray-900">
+            {t("clinicName")}
+          </h1>
+          <p className="text-gray-500">{t("admin.login")}</p>
+        </div>
+
+        {/* Login Card */}
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-xl shadow-sm p-6"
+          className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100"
         >
           {error && (
             <div className="bg-red-50 text-red-700 px-4 py-2 rounded-lg mb-4 text-sm">
@@ -59,7 +71,7 @@ const AdminLoginPage = () => {
             </div>
           )}
 
-          <div className="space-y-4">
+          <div className="space-y-5">
             {/* Username */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -70,8 +82,9 @@ const AdminLoginPage = () => {
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg 
-                focus:ring-2 focus:ring-red-500 outline-none"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl 
+                focus:ring-2 focus:ring-teal-500 focus:border-teal-500 
+                outline-none transition text-gray-700"
               />
             </div>
 
@@ -85,23 +98,29 @@ const AdminLoginPage = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg 
-                focus:ring-2 focus:ring-red-500 outline-none"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl 
+                focus:ring-2 focus:ring-teal-500 focus:border-teal-500 
+                outline-none transition text-gray-700"
               />
             </div>
 
+            {/* Login Button */}
             <button
               type="submit"
-              className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold 
-              hover:bg-red-700 transition"
+              className="w-full bg-teal-600 text-white py-3 rounded-xl font-semibold 
+              shadow-md hover:bg-teal-700 transition"
             >
               {t("admin.login")}
             </button>
           </div>
         </form>
 
+        {/* Demo Credentials */}
         <p className="text-center text-gray-500 text-sm mt-4 select-all">
-          Demo: admin / sanjeevani123
+          Demo Login —{" "}
+          <span className="text-teal-600 font-medium">
+            admin / sanjeevani123
+          </span>
         </p>
       </div>
     </div>
