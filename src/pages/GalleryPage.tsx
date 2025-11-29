@@ -7,14 +7,14 @@ const galleryItems = [
   {
     id: "G001",
     title: "Eczema Treatment - Hands",
-    beforeImage: "./public/face-chin-before.jpg",
-    afterImage: "./public/face-chin-after.jpg",
+    beforeImage: "./face-chin-before.jpg",
+    afterImage: "./face-chin-after.jpg",
   },
   {
     id: "G002",
     title: "Psoriasis Treatment - Scalp",
-    beforeImage: "./public/face-eyelid-before.jpg",
-    afterImage: "./public/face-eyelid-after.jpg",
+    beforeImage: "./face-eyelid-before.jpg",
+    afterImage: "./face-eyelid-after.jpg",
   },
 ];
 
