@@ -33,10 +33,6 @@ export default function Appointment() {
             {t("appointment.title")}
           </h1>
 
-          <p className="text-center text-gray-600 mb-10">
-            {t("appointment.subtitle")}
-          </p>
-
           {/* Form Container */}
           <form
             onSubmit={handleSubmit}

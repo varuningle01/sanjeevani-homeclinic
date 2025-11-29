@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux";
-import type { RootState } from "../store/store";
 import { useTranslation } from "react-i18next";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -8,7 +6,6 @@ import { FiCheckCircle } from "react-icons/fi";
 
 const AboutPage = () => {
   const { t } = useTranslation();
-  const doctor = useSelector((state: RootState) => state.clinic.doctor);
 
   return (
     <>
@@ -32,7 +29,7 @@ const AboutPage = () => {
               <div className="md:w-1/3 bg-gray-100">
                 <img
                   src={doctorPhoto}
-                  alt={doctor.name}
+                  alt={t("doctor.name")}
                   className="w-full h-64 md:h-full object-cover"
                 />
               </div>
@@ -40,18 +37,18 @@ const AboutPage = () => {
               {/* Doctor Info */}
               <div className="md:w-2/3 p-8">
                 <h2 className="text-2xl font-bold text-[#0B7A75] mb-1">
-                  {doctor.name}
+                  {t("doctor.name")}
                 </h2>
 
                 <p className="text-gray-600 text-sm mb-4">
-                  {doctor.qualification}
+                  {t("doctor.qualification")}
                 </p>
 
                 {/* Stats */}
                 <div className="flex gap-10 mb-6">
                   <div>
                     <p className="text-3xl font-extrabold text-[#0B7A75]">
-                      {doctor.experience}+
+                      {t("doctor.experienceYears")}+
                     </p>
                     <p className="text-sm text-gray-600">
                       {t("about.experience")}
@@ -60,7 +57,7 @@ const AboutPage = () => {
 
                   <div>
                     <p className="text-3xl font-extrabold text-[#0B7A75]">
-                      {doctor.patientsCount.toLocaleString()}+
+                      {t("doctor.patientsTreated")}+
                     </p>
                     <p className="text-sm text-gray-600">
                       {t("about.patients")}
@@ -69,7 +66,9 @@ const AboutPage = () => {
                 </div>
 
                 {/* About Doctor */}
-                <p className="text-gray-700 leading-relaxed">{doctor.about}</p>
+                <p className="text-gray-700 leading-relaxed">
+                  {t("doctor.about")}
+                </p>
               </div>
             </div>
           </div>

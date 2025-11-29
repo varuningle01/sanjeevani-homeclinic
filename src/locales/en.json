@@ -30,6 +30,14 @@
     "patients": "Patients Treated",
     "qualification": "Qualifications"
   },
+  "doctor": {
+    "name": "Dr. Prashant Ingle",
+    "qualification": "BHMS, Skin Specialist",
+    "experienceYears": "10",
+    "patientsTreated": "5000",
+    "about": "Dr. Prashant Ingle is an experienced Homeopathic Skin Specialist with a strong focus on treating chronic skin diseases such as Psoriasis, Vitiligo, Eczema, Acne and Allergies through safe and natural Homeopathic methods."
+  },
+
   "gallery": {
     "title": "Treatment Results",
     "subtitle": "Before & After Gallery",
@@ -49,8 +57,8 @@
   "contact": {
     "title": "Contact Us",
     "address": "Address",
-    "addressLine1": "Sanjeevani HomeoClinic, near Bhamburkar Hospital",
-    "addressLine2": "Akola, Maharashtra – 444001",
+    "addressLine1": "Sanjivani Homoeo Clinic, Vinayak Sankul opp Bhamburkar Hospital Tapadiya Nagar",
+    "addressLine2": "Akola, Maharashtra – 444005",
     "phone": "Phone",
     "phoneNumber": "9822566949",
     "timings": "Clinic Timings",

@@ -51,7 +51,6 @@ const serviceData = [
 
 function HomePage() {
   const { t } = useTranslation();
-  const doctor = useSelector((state: RootState) => state.clinic.doctor);
 
   return (
     <div className="bg-[#f0fdfa] w-full min-h-screen">
@@ -71,7 +70,7 @@ function HomePage() {
             </h1>
 
             <h2 className="text-xl text-teal-700 font-semibold mb-2">
-              {doctor.name}
+              {t("doctorName")}
             </h2>
 
             <p className="text-gray-700 mb-4">{t("specialization")}</p>
@@ -103,7 +102,7 @@ function HomePage() {
             <div className="w-64 h-80 md:w-80 md:h-96 bg-white border border-teal-100 rounded-3xl overflow-hidden shadow-xl">
               <img
                 src={doctorPhoto}
-                alt={doctor.name}
+                alt={t("doctorName")}
                 className="w-full h-full object-cover"
               />
             </div>
