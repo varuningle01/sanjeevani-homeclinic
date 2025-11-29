@@ -11,6 +11,7 @@ import {
   FiLogOut,
   FiActivity,
 } from "react-icons/fi";
+import ClinicLogo from "../../components/ClinicLogo"; // ← IMPORT LOGO
 
 interface SidebarProps {
   open: boolean;
@@ -53,8 +54,8 @@ const AdminSideBar = ({ open, setOpen }: SidebarProps) => {
     >
       {/* Header */}
       <div className="p-5 border-b border-gray-200 flex items-center gap-3">
-        <div className="w-10 h-10 bg-teal-600 text-white rounded-full flex items-center justify-center font-bold text-lg shadow">
-          S
+        <div className="w-10 h-10 flex items-center justify-center">
+          <ClinicLogo className="w-10 h-10" /> {/* NEW LOGO */}
         </div>
         <span className="font-semibold text-gray-700">{t("clinicName")}</span>
       </div>

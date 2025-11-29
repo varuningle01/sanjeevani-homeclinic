@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/slices/authSlice";
 import { useNavigate, Link } from "react-router-dom";
 import type { RootState } from "../../store/store";
+import ClinicLogo from "../../components/ClinicLogo"; // <-- NEW LOGO
 
 const AdminLoginPage = () => {
   const { t } = useTranslation();
@@ -50,8 +51,8 @@ const AdminLoginPage = () => {
 
         {/* Logo + Title */}
         <div className="text-center mb-10">
-          <div className="w-16 h-16 bg-teal-600 rounded-2xl flex items-center justify-center mx-auto shadow-md">
-            <span className="text-white font-bold text-2xl">S</span>
+          <div className="mx-auto flex items-center justify-center">
+            <ClinicLogo className="w-28 h-28 md:w-32 md:h-32" />
           </div>
 
           <h1 className="text-2xl font-bold mt-4 text-gray-900">
@@ -60,7 +61,7 @@ const AdminLoginPage = () => {
           <p className="text-gray-500">{t("admin.login")}</p>
         </div>
 
-        {/* Login Card */}
+        {/* Login Form */}
         <form
           onSubmit={handleSubmit}
           className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100"

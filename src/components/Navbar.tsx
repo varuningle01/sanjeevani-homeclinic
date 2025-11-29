@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
 import type { RootState } from "../store/store";
+import ClinicLogo from "./ClinicLogo";
 
 function Navbar() {
   const { t, i18n } = useTranslation();
@@ -36,10 +37,10 @@ function Navbar() {
 
       {/* MAIN NAV */}
       <div className="w-full px-4 md:px-10 py-4 flex items-center justify-between">
-        {/* Logo */}
+        {/* Logo Section */}
         <Link className="flex items-center gap-3" to="/">
-          <div className="w-10 h-10 bg-[#0B7A75] text-white rounded-full flex items-center justify-center font-bold text-lg">
-            S
+          <div className="w-10 h-10 flex items-center justify-center">
+            <ClinicLogo />
           </div>
 
           <div>
@@ -64,7 +65,6 @@ function Navbar() {
             >
               {item.label}
 
-              {/* Underline animation */}
               {isActive(item.path) && (
                 <motion.div
                   layoutId="active-pill"
@@ -76,19 +76,19 @@ function Navbar() {
           ))}
         </nav>
 
-        {/* Language Switcher Desktop */}
+        {/* Language Switcher */}
         <select
           value={i18n.language}
           onChange={(e) => i18n.changeLanguage(e.target.value)}
           className="hidden md:block bg-white border border-gray-300 text-gray-700 text-sm rounded-md px-3 py-1.5 shadow-sm 
-          focus:outline-none focus:ring-2 focus:ring-[#0B7A75]/40 transition"
+            focus:outline-none focus:ring-2 focus:ring-[#0B7A75]/40 transition"
         >
           <option value="en">English</option>
           <option value="hi">हिंदी</option>
           <option value="mr">मराठी</option>
         </select>
 
-        {/* Mobile Menu Toggle */}
+        {/* Mobile Menu Button */}
         <motion.button
           className="md:hidden"
           onClick={() => setOpen(!open)}
@@ -99,7 +99,7 @@ function Navbar() {
         </motion.button>
       </div>
 
-      {/* MOBILE MENU */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -125,12 +125,12 @@ function Navbar() {
                 </Link>
               ))}
 
-              {/* Language Selector Mobile */}
+              {/* Mobile Language Selector */}
               <select
                 value={i18n.language}
                 onChange={(e) => i18n.changeLanguage(e.target.value)}
                 className="bg-gray-100 border border-gray-300 text-gray-700 text-base rounded-md px-3 py-2 shadow-sm 
-                focus:outline-none focus:ring-2 focus:ring-[#0B7A75]/40 transition"
+                  focus:outline-none focus:ring-2 focus:ring-[#0B7A75]/40 transition"
               >
                 <option value="en">English</option>
                 <option value="hi">हिंदी</option>
