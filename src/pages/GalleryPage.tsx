@@ -6,13 +6,13 @@ import GalleryCard from "../components/GalleryCard";
 const galleryItems = [
   {
     id: "G001",
-    title: "Eczema Treatment - Hands",
+    title: "Vitiligo",
     beforeImage: "./face-chin-before.jpg",
     afterImage: "./face-chin-after.jpg",
   },
   {
     id: "G002",
-    title: "Psoriasis Treatment - Scalp",
+    title: "Vitiligo",
     beforeImage: "./face-eyelid-before.jpg",
     afterImage: "./face-eyelid-after.jpg",
   },

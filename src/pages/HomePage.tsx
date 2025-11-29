@@ -6,6 +6,49 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../store/store";
 import doctorPhoto from "../assets/prashant-doctor.png";
 
+const serviceData = [
+  {
+    key: "psoriasis",
+    image:
+      "https://ysm-res.cloudinary.com/image/upload/c_fill%2Cf_auto%2Cg_faces%3Aauto%2Ch_960%2Cq_auto%2Cw_1280/v1/yms/prod/010ce533-5df6-441b-9d1d-3ef2a21aeadc",
+  },
+  {
+    key: "vitiligo",
+    image:
+      "https://my.clevelandclinic.org/-/scassets/images/org/health/articles/12419-vitiligo",
+  },
+  {
+    key: "eczema",
+    image:
+      "https://img.lb.wbmdstatic.com/vim/live/webmd/consumer_assets/site_images/articles/health_tools/visual_guide_to_eczema_slideshow/1800ss_science_source_rm_eczema_on_hand.jpg?output-quality=100&resize=728px%3A%2A",
+  },
+  {
+    key: "acne",
+    image:
+      "https://www.news-medical.net/image-handler/picture/2017/3/shutterstock_459808462.jpg",
+  },
+  {
+    key: "allergy",
+    image:
+      "https://media.post.rvohealth.io/wp-content/uploads/sites/3/2022/10/types-rashes-slide42.jpg",
+  },
+  {
+    key: "fungal",
+    image:
+      "https://media.post.rvohealth.io/wp-content/uploads/2020/08/648x364_Ringworm_Body_Tinea_Corporis.jpg",
+  },
+  {
+    key: "hairfall",
+    image:
+      "https://my.clevelandclinic.org/-/scassets/images/org/health/articles/24515-male-pattern-baldness",
+  },
+  {
+    key: "urticaria",
+    image:
+      "https://www.houstonent.com/hubfs/shutterstock_2021018495%20%281%29.jpg",
+  },
+];
+
 function HomePage() {
   const { t } = useTranslation();
   const doctor = useSelector((state: RootState) => state.clinic.doctor);
@@ -14,9 +57,9 @@ function HomePage() {
     <div className="bg-white w-full">
       <Navbar />
 
-      {/* HERO */}
+      {/* HERO SECTION */}
       <section className="py-12 md:py-20">
-        <div className="w-full px-4 md:px-10 grid md:grid-cols-2 gap-12 items-center max-w-[1300px] mx-auto">
+        <div className="max-w-[1300px] mx-auto px-4 md:px-10 grid md:grid-cols-2 gap-12 items-center">
           {/* Left Text */}
           <div>
             <p className="text-primary font-semibold text-sm mb-2">
@@ -35,7 +78,6 @@ function HomePage() {
 
             <p className="text-gray-800 text-lg mb-8">{t("hero.tagline")}</p>
 
-            {/* Buttons */}
             <div className="flex flex-wrap gap-4">
               <Link
                 to="/appointment"
@@ -71,19 +113,18 @@ function HomePage() {
         <div className="w-full max-w-[1300px] mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-12">{t("services.title")}</h2>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: "🩹", label: t("services.eczema") },
-              { icon: "🔬", label: t("services.psoriasis") },
-              { icon: "💊", label: t("services.skinAllergy") },
-              { icon: "🌿", label: t("services.acne") },
-            ].map((item, idx) => (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {serviceData.map((item) => (
               <div
-                key={idx}
-                className="p-6 bg-white border rounded-xl shadow-sm hover:shadow-md transition"
+                key={item.key}
+                className="bg-white rounded-xl border shadow-sm hover:shadow-md transition"
               >
-                <div className="text-4xl mb-3">{item.icon}</div>
-                <h3 className="text-lg font-semibold">{item.label}</h3>
+                <img
+                  src={item.image}
+                  className="w-full h-36 md:h-44 object-cover rounded-t-xl"
+                  alt={t(`services.${item.key}`)}
+                />
+                <p className="p-4 font-semibold">{t(`services.${item.key}`)}</p>
               </div>
             ))}
           </div>

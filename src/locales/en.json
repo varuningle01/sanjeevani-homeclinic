@@ -82,5 +82,16 @@
     "username": "Username",
     "password": "Password",
     "invalid": "Invalid credentials"
+  },
+  "services": {
+    "title": "Skin & Homeopathic Specialties",
+    "psoriasis": "Psoriasis",
+    "vitiligo": "Vitiligo / White Patches",
+    "eczema": "Eczema",
+    "acne": "Acne & Pimples",
+    "allergy": "Skin Allergy",
+    "fungal": "Fungal Infection",
+    "hairfall": "Hair Fall & Dandruff",
+    "urticaria": "Urticaria / Hives"
   }
 }
