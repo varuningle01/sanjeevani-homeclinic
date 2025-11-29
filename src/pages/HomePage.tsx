@@ -29,7 +29,7 @@ const serviceData = [
       "https://www.news-medical.net/image-handler/picture/2017/3/shutterstock_459808462.jpg",
   },
   {
-    key: "allergy",
+    key: "skinAllergy",
     image:
       "https://media.post.rvohealth.io/wp-content/uploads/sites/3/2022/10/types-rashes-slide42.jpg",
   },
