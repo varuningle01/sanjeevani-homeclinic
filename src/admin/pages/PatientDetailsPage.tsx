@@ -87,29 +87,29 @@ const PatientDetailsPage = () => {
       </div>
 
       {/* Patient Info Card */}
-      <div className="bg-white rounded-2xl shadow-sm border p-6">
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-          {/* Left: Photo and Basic Info */}
-          <div className="flex items-start gap-4">
+      <div className="bg-white rounded-2xl shadow-sm border p-4 sm:p-6">
+        <div className="flex flex-col gap-6">
+          {/* Photo and Basic Info */}
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
             {selectedPatient.photoUrl ? (
               <img
                 src={selectedPatient.photoUrl}
                 alt={selectedPatient.name}
-                className="w-24 h-24 rounded-full object-cover border-4 border-gray-200"
+                className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-gray-200 flex-shrink-0"
               />
             ) : (
-              <div className="w-24 h-24 rounded-full bg-teal-100 flex items-center justify-center border-4 border-gray-200">
-                <FiUser className="text-4xl text-teal-600" />
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-teal-100 flex items-center justify-center border-4 border-gray-200 flex-shrink-0">
+                <FiUser className="text-3xl sm:text-4xl text-teal-600" />
               </div>
             )}
 
-            <div className="space-y-3">
+            <div className="flex-1 text-center sm:text-left space-y-3 w-full">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">{selectedPatient.name}</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{selectedPatient.name}</h2>
                 <p className="text-sm text-gray-500">ID: {selectedPatient.id}</p>
               </div>
 
-              <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2 sm:gap-x-6">
                 <div>
                   <p className="text-xs text-gray-500">Age</p>
                   <p className="font-medium text-gray-900">{selectedPatient.age} years</p>
@@ -120,14 +120,14 @@ const PatientDetailsPage = () => {
                 </div>
                 <div className="col-span-2">
                   <p className="text-xs text-gray-500">Mobile Number</p>
-                  <p className="font-medium text-gray-900 flex items-center gap-2">
+                  <p className="font-medium text-gray-900 flex items-center justify-center sm:justify-start gap-2">
                     <FiPhone className="text-teal-600" />
                     {selectedPatient.mobileNumber}
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 text-sm text-gray-500">
+              <div className="flex items-center justify-center sm:justify-start gap-4 text-sm text-gray-500">
                 <div className="flex items-center gap-1">
                   <FiCalendar className="text-teal-600" />
                   <span>Registered {formatRelativeTime(selectedPatient.createdAt)}</span>
@@ -136,18 +136,18 @@ const PatientDetailsPage = () => {
             </div>
           </div>
 
-          {/* Right: Action Buttons */}
-          <div className="flex md:flex-col gap-2">
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-4 border-t">
             <button
               onClick={() => setShowUpdateModal(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition"
             >
               <FiEdit />
               <span className="font-medium">Edit</span>
             </button>
             <button
               onClick={() => setShowDeleteModal(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition border border-red-200"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition border border-red-200"
             >
               <FiTrash2 />
               <span className="font-medium">Delete</span>

@@ -7,9 +7,7 @@ import {
   FiHome,
   FiUsers,
   FiCalendar,
-  FiClock,
   FiLogOut,
-  FiActivity,
 } from "react-icons/fi";
 import ClinicLogo from "../../components/ClinicLogo"; // ← IMPORT LOGO
 

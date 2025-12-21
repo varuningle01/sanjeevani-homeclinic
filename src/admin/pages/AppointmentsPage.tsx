@@ -112,13 +112,13 @@ const AppointmentsPage = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-2xl shadow-sm border p-5">
+      <div className="bg-white rounded-2xl shadow-sm border p-4 sm:p-5">
         <div className="flex items-center gap-2 mb-4">
           <FiFilter className="text-gray-500" />
           <h2 className="font-semibold text-gray-900">Filter Appointments</h2>
         </div>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
           <button
             onClick={() => handleDateFilter('all')}
             className={`px-4 py-2 rounded-lg font-medium transition ${
@@ -150,20 +150,20 @@ const AppointmentsPage = () => {
             Tomorrow
           </button>
 
-          <div className="flex items-center gap-2">
-            <div className="relative">
-              <FiCalendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <div className="flex items-center gap-2 flex-1 sm:flex-initial">
+            <div className="relative flex-1 sm:flex-initial">
+              <FiCalendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
               <input
                 type="date"
                 value={selectedDate}
                 onChange={(e) => handleDateFilter('custom', e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none"
+                className="w-full sm:w-auto pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none"
               />
             </div>
             {selectedDate && (
               <button
                 onClick={clearFilter}
-                className="p-2 hover:bg-gray-100 rounded-lg transition"
+                className="p-2 hover:bg-gray-100 rounded-lg transition flex-shrink-0"
                 title="Clear filter"
               >
                 <FiX className="text-gray-600" />

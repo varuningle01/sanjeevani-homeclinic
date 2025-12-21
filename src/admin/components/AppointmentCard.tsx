@@ -26,22 +26,22 @@ const AppointmentCard = ({ appointment }: AppointmentCardProps) => {
   };
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
-      <div className="flex items-start justify-between mb-3">
+    <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-5 hover:shadow-md transition-shadow">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-3">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center">
-            <FiUser className="text-xl text-teal-600" />
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0">
+            <FiUser className="text-lg sm:text-xl text-teal-600" />
           </div>
-          <div>
-            <h3 className="font-semibold text-gray-900">{appointment.patientName}</h3>
-            <div className="flex items-center gap-1 text-sm text-gray-500 mt-0.5">
-              <FiPhone className="text-xs" />
-              <span>{appointment.phoneNumber}</span>
+          <div className="min-w-0 flex-1">
+            <h3 className="font-semibold text-gray-900 truncate">{appointment.patientName}</h3>
+            <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-500 mt-0.5">
+              <FiPhone className="text-xs flex-shrink-0" />
+              <span className="truncate">{appointment.phoneNumber}</span>
             </div>
           </div>
         </div>
         <span
-          className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(
+          className={`px-3 py-1 rounded-full text-xs font-medium border self-start ${getStatusColor(
             appointment.status
           )}`}
         >
@@ -51,7 +51,7 @@ const AppointmentCard = ({ appointment }: AppointmentCardProps) => {
 
       <div className="space-y-2">
         <div className="flex items-center gap-2 text-sm text-gray-600">
-          <FiClock className="text-teal-600" />
+          <FiClock className="text-teal-600 flex-shrink-0" />
           <span className="font-medium">{appointment.appointmentTime}</span>
         </div>
 

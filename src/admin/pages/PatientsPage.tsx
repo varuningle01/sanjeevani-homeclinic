@@ -116,71 +116,117 @@ const PatientsPage = () => {
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b">
-                <tr>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Patient
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Age
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Gender
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Mobile
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Last Updated
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {filteredPatients.map((patient) => (
-                  <tr key={patient.id} className="hover:bg-gray-50 transition">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        {patient.photoUrl ? (
-                          <img
-                            src={patient.photoUrl}
-                            alt={patient.name}
-                            className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
-                          />
-                        ) : (
-                          <div className="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center">
-                            <FiUser className="text-teal-600" />
-                          </div>
-                        )}
-                        <div>
-                          <p className="font-medium text-gray-900">{patient.name}</p>
-                          <p className="text-xs text-gray-500">ID: {patient.id.slice(0, 12)}...</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-gray-700">{patient.age}</td>
-                    <td className="px-6 py-4 text-gray-700">{patient.gender}</td>
-                    <td className="px-6 py-4 text-gray-700">{patient.mobileNumber}</td>
-                    <td className="px-6 py-4 text-gray-500 text-sm">
-                      {formatRelativeTime(patient.updatedAt)}
-                    </td>
-                    <td className="px-6 py-4">
-                      <Link
-                        to={`/admin/patients/${patient.id}`}
-                        className="text-teal-600 hover:text-teal-700 font-medium text-sm"
-                      >
-                        View Details
-                      </Link>
-                    </td>
+          <>
+            {/* Desktop Table View */}
+            <div className="hidden lg:block overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50 border-b">
+                  <tr>
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Patient
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Age
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Gender
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Mobile
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Last Updated
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Actions
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {filteredPatients.map((patient) => (
+                    <tr key={patient.id} className="hover:bg-gray-50 transition">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          {patient.photoUrl ? (
+                            <img
+                              src={patient.photoUrl}
+                              alt={patient.name}
+                              className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
+                            />
+                          ) : (
+                            <div className="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center">
+                              <FiUser className="text-teal-600" />
+                            </div>
+                          )}
+                          <div>
+                            <p className="font-medium text-gray-900">{patient.name}</p>
+                            <p className="text-xs text-gray-500">ID: {patient.id.slice(0, 12)}...</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-gray-700">{patient.age}</td>
+                      <td className="px-6 py-4 text-gray-700">{patient.gender}</td>
+                      <td className="px-6 py-4 text-gray-700">{patient.mobileNumber}</td>
+                      <td className="px-6 py-4 text-gray-500 text-sm">
+                        {formatRelativeTime(patient.updatedAt)}
+                      </td>
+                      <td className="px-6 py-4">
+                        <Link
+                          to={`/admin/patients/${patient.id}`}
+                          className="text-teal-600 hover:text-teal-700 font-medium text-sm"
+                        >
+                          View Details
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="lg:hidden divide-y divide-gray-200">
+              {filteredPatients.map((patient) => (
+                <Link
+                  key={patient.id}
+                  to={`/admin/patients/${patient.id}`}
+                  className="block p-4 hover:bg-gray-50 transition"
+                >
+                  <div className="flex items-start gap-3">
+                    {patient.photoUrl ? (
+                      <img
+                        src={patient.photoUrl}
+                        alt={patient.name}
+                        className="w-14 h-14 rounded-full object-cover border-2 border-gray-200 flex-shrink-0"
+                      />
+                    ) : (
+                      <div className="w-14 h-14 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0">
+                        <FiUser className="text-xl text-teal-600" />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-gray-900 truncate">{patient.name}</h3>
+                      <div className="mt-1 space-y-1">
+                        <p className="text-sm text-gray-600">
+                          {patient.age} years • {patient.gender}
+                        </p>
+                        <div className="flex items-center gap-1 text-sm text-gray-600">
+                          <FiPhone className="text-xs flex-shrink-0" />
+                          <span className="truncate">{patient.mobileNumber}</span>
+                        </div>
+                        <p className="text-xs text-gray-500">
+                          Updated {formatRelativeTime(patient.updatedAt)}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex-shrink-0">
+                      <span className="text-teal-600 text-sm font-medium">View →</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </>
         )}
       </div>
 

@@ -184,11 +184,11 @@ const UpdatePatientModal = ({ isOpen, onClose, patient }: UpdatePatientModalProp
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black bg-opacity-50">
       <div className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-white z-10">
-          <h2 className="text-2xl font-bold text-gray-900">Update Patient</h2>
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b sticky top-0 bg-white z-10 rounded-t-2xl">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Update Patient</h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-gray-100 rounded-lg transition"
@@ -198,10 +198,10 @@ const UpdatePatientModal = ({ isOpen, onClose, patient }: UpdatePatientModalProp
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b sticky top-[73px] bg-white z-10">
+        <div className="flex border-b sticky top-[65px] sm:top-[73px] bg-white z-10">
           <button
             onClick={() => setActiveTab('details')}
-            className={`flex-1 px-6 py-3 font-medium transition ${
+            className={`flex-1 px-4 sm:px-6 py-3 font-medium transition text-sm sm:text-base ${
               activeTab === 'details'
                 ? 'text-teal-600 border-b-2 border-teal-600'
                 : 'text-gray-500 hover:text-gray-700'
@@ -211,7 +211,7 @@ const UpdatePatientModal = ({ isOpen, onClose, patient }: UpdatePatientModalProp
           </button>
           <button
             onClick={() => setActiveTab('visit')}
-            className={`flex-1 px-6 py-3 font-medium transition ${
+            className={`flex-1 px-4 sm:px-6 py-3 font-medium transition text-sm sm:text-base ${
               activeTab === 'visit'
                 ? 'text-teal-600 border-b-2 border-teal-600'
                 : 'text-gray-500 hover:text-gray-700'
@@ -222,7 +222,7 @@ const UpdatePatientModal = ({ isOpen, onClose, patient }: UpdatePatientModalProp
         </div>
 
         {/* Tab Content */}
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           {activeTab === 'details' ? (
             <form onSubmit={handleUpdateDetails} className="space-y-5">
               {/* Photo Upload */}
