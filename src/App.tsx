@@ -11,6 +11,9 @@ const GalleryPage = lazy(() => import("./pages/GalleryPage"));
 const AppointmentPage = lazy(() => import("./pages/AppointmentPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const AdminLoginPage = lazy(() => import("./admin/pages/AdminLoginPage"));
+const PatientsPage = lazy(() => import("./admin/pages/PatientsPage"));
+const PatientDetailsPage = lazy(() => import("./admin/pages/PatientDetailsPage"));
+const AppointmentsPage = lazy(() => import("./admin/pages/AppointmentsPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 export default function App() {
@@ -30,6 +33,36 @@ export default function App() {
             <ProtectedRoute>
               <AdminLayout>
                 <AdminDashboard />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/patients"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <PatientsPage />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/patients/:id"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <PatientDetailsPage />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/appointments"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AppointmentsPage />
               </AdminLayout>
             </ProtectedRoute>
           }

@@ -38,8 +38,6 @@ const AdminSideBar = ({ open, setOpen }: SidebarProps) => {
       label: "Appointments",
       icon: <FiCalendar />,
     },
-    { path: "/admin/activity", label: "Activity", icon: <FiActivity /> },
-    { path: "/admin/timing", label: "Clinic Timings", icon: <FiClock /> },
   ];
 
   return (
@@ -98,18 +96,28 @@ const AdminSideBar = ({ open, setOpen }: SidebarProps) => {
       <div className="p-4 border-t border-gray-200">
         <p className="text-xs text-gray-500 mb-2">{t("admin.availability")}</p>
 
-        <button
-          onClick={() => setIsOnline(!isOnline)}
-          className={`w-full py-2.5 rounded-lg font-medium transition-all shadow-sm
-            ${
-              isOnline
-                ? "bg-teal-600 text-white hover:bg-teal-700"
-                : "bg-red-500 text-white hover:bg-red-600"
-            }
-          `}
-        >
-          {isOnline ? t("status.online") : t("status.offline")}
-        </button>
+        <div className="flex items-center justify-between">
+          <span className={`text-sm font-medium transition-colors ${
+            isOnline ? "text-teal-700" : "text-gray-500"
+          }`}>
+            {isOnline ? t("status.online") : t("status.offline")}
+          </span>
+          
+          <button
+            onClick={() => setIsOnline(!isOnline)}
+            className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 ${
+              isOnline ? "bg-teal-600" : "bg-gray-300"
+            }`}
+            role="switch"
+            aria-checked={isOnline}
+          >
+            <span
+              className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-lg transition-transform ${
+                isOnline ? "translate-x-8" : "translate-x-1"
+              }`}
+            />
+          </button>
+        </div>
       </div>
 
       {/* Logout */}
