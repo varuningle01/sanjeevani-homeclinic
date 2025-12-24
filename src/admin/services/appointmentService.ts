@@ -1,97 +1,61 @@
 import type { Appointment } from '../types/appointment.types';
 
-// Mock data for development
-const mockAppointments: Appointment[] = [
-  {
-    id: '1',
-    patientName: 'Rajesh Kumar',
-    phoneNumber: '+91 98765 43210',
-    appointmentDate: '2025-12-22',
-    appointmentTime: '10:00',
-    problem: 'Regular checkup and consultation',
-    status: 'confirmed',
-    createdAt: '2025-12-20T10:30:00Z',
-  },
-  {
-    id: '2',
-    patientName: 'Priya Sharma',
-    phoneNumber: '+91 87654 32109',
-    appointmentDate: '2025-12-22',
-    appointmentTime: '11:30',
-    problem: 'Follow-up for chronic headache',
-    status: 'confirmed',
-    createdAt: '2025-12-20T14:20:00Z',
-  },
-  {
-    id: '3',
-    patientName: 'Amit Patel',
-    phoneNumber: '+91 76543 21098',
-    appointmentDate: '2025-12-22',
-    appointmentTime: '14:00',
-    problem: 'Skin allergy consultation',
-    status: 'confirmed',
-    createdAt: '2025-12-21T09:15:00Z',
-  },
-  {
-    id: '4',
-    patientName: 'Sneha Desai',
-    phoneNumber: '+91 65432 10987',
-    appointmentDate: '2025-12-23',
-    appointmentTime: '09:30',
-    problem: 'Digestive issues',
-    status: 'confirmed',
-    createdAt: '2025-12-21T11:45:00Z',
-  },
-  {
-    id: '5',
-    patientName: 'Vikram Singh',
-    phoneNumber: '+91 54321 09876',
-    appointmentDate: '2025-12-23',
-    appointmentTime: '15:00',
-    problem: 'Joint pain and stiffness',
-    status: 'confirmed',
-    createdAt: '2025-12-21T16:30:00Z',
-  },
-  {
-    id: '6',
-    patientName: 'Meera Reddy',
-    phoneNumber: '+91 43210 98765',
-    appointmentDate: '2025-12-24',
-    appointmentTime: '10:30',
-    problem: 'Respiratory issues',
-    status: 'confirmed',
-    createdAt: '2025-12-21T18:00:00Z',
-  },
-  {
-    id: '7',
-    patientName: 'Arjun Mehta',
-    phoneNumber: '+91 32109 87654',
-    appointmentDate: '2025-12-24',
-    appointmentTime: '13:00',
-    status: 'confirmed',
-    createdAt: '2025-12-21T20:15:00Z',
-  },
-  {
-    id: '8',
-    patientName: 'Kavita Joshi',
-    phoneNumber: '+91 21098 76543',
-    appointmentDate: '2025-12-25',
-    appointmentTime: '11:00',
-    problem: 'Anxiety and stress management',
-    status: 'confirmed',
-    createdAt: '2025-12-22T08:30:00Z',
-  },
-];
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
-// Simulate API delay
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const mapBackendToFrontend = (data: any): Appointment => {
+  const dateObj = new Date(data.appointmentTime);
+  const dateStr = dateObj.toISOString().split("T")[0];
+  
+  // Ensure timeStr is HH:mm format (sometimes toLocaleTimeString can vary based on locale)
+  // Let's use getHours/getMinutes for consistency with previous logic
+  const hours = dateObj.getHours().toString().padStart(2, '0');
+  const minutes = dateObj.getMinutes().toString().padStart(2, '0');
+  const timeFormatted = `${hours}:${minutes}`;
+
+  return {
+    id: data._id,
+    patientName: data.name,
+    phoneNumber: data.phone,
+    appointmentDate: dateStr,
+    appointmentTime: timeFormatted,
+    problem: data.problem,
+    status: 'confirmed', // Default status as backend doesn't store it yet
+    createdAt: data.createdAt,
+  };
+};
 
 /**
  * Fetch all appointments
  */
 export const getAllAppointments = async (): Promise<Appointment[]> => {
-  await delay(500);
-  return mockAppointments;
+  try {
+    // Get token from auth state in local storage
+    const savedAuth = localStorage.getItem("adminAuth");
+    let token = "";
+    if (savedAuth) {
+        const parsed = JSON.parse(savedAuth);
+        token = parsed.token;
+    }
+
+    const response = await fetch(`${API_URL}/appointments`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
+    if (response.status === 401) {
+        throw new Error("Unauthorized");
+    }
+    
+    if (!response.ok) {
+        throw new Error("Failed to fetch appointments");
+    }
+    const data = await response.json();
+    return data.map(mapBackendToFrontend);
+  } catch (error) {
+    console.error("Error in getAllAppointments:", error);
+    throw error;
+  }
 };
 
 /**
@@ -101,14 +65,14 @@ export const getAppointmentsByDateRange = async (
   startDate: string,
   endDate: string
 ): Promise<Appointment[]> => {
-  await delay(500);
-  
-  return mockAppointments.filter(appointment => {
-    const appointmentDate = new Date(appointment.appointmentDate);
+  // Currently backend does not support range query in GET /, so we fetch all and filter
+  // Optimization: Implement backend range query later
+  const all = await getAllAppointments();
+  return all.filter(appointment => {
+    const aptDate = new Date(appointment.appointmentDate);
     const start = new Date(startDate);
     const end = new Date(endDate);
-    
-    return appointmentDate >= start && appointmentDate <= end;
+    return aptDate >= start && aptDate <= end;
   });
 };
 
@@ -116,7 +80,7 @@ export const getAppointmentsByDateRange = async (
  * Fetch appointments for a specific date
  */
 export const getAppointmentsByDate = async (date: string): Promise<Appointment[]> => {
-  await delay(500);
-  
-  return mockAppointments.filter(appointment => appointment.appointmentDate === date);
+   // Optimization: Backend could support ?date= query on GET /appointments
+   const all = await getAllAppointments();
+   return all.filter(apt => apt.appointmentDate === date);
 };

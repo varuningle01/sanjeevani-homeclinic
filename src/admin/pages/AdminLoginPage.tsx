@@ -11,29 +11,29 @@ const AdminLoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
+  const { isAuthenticated, loading, error: authError } = useSelector(
+    (state: RootState) => state.auth
   );
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Redirect if already authenticated
+  if (isAuthenticated) {
+      setTimeout(() => navigate("/admin/dashboard"), 100);
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
 
-    dispatch(login({ username, password }));
-
-    setTimeout(() => {
-      if (
-        isAuthenticated ||
-        (username === "admin" && password === "sanjeevani123")
-      ) {
+    try {
+        await dispatch(login({ username, password }) as any).unwrap();
         navigate("/admin/dashboard");
-      } else {
-        setError(t("admin.invalid"));
-      }
-    }, 10);
+    } catch (err) {
+        setError("Invalid username or password");
+    }
   };
 
   return (
@@ -108,10 +108,11 @@ const AdminLoginPage = () => {
             {/* Login Button */}
             <button
               type="submit"
+              disabled={loading}
               className="w-full bg-teal-600 text-white py-3 rounded-xl font-semibold 
-              shadow-md hover:bg-teal-700 transition"
+              shadow-md hover:bg-teal-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {t("admin.login")}
+              {loading ? "Logging in..." : t("admin.login")}
             </button>
           </div>
         </form>
