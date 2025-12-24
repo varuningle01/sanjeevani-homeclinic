@@ -5,15 +5,15 @@ export interface AppointmentData {
   problem: string;
 }
 
-const API_URL = "http://localhost:5000/api/appointments";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
-export const bookAppointment = async (data: AppointmentData) => {
-  const response = await fetch(API_URL, {
+export const bookAppointment = async (appointmentData: AppointmentData) => {
+  const response = await fetch(`${API_URL}/appointments`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(appointmentData),
   });
 
   const result = await response.json();
@@ -26,9 +26,9 @@ export const bookAppointment = async (data: AppointmentData) => {
 };
 
 export const fetchBookedSlots = async (date: string) => {
-  const response = await fetch(`${API_URL}/slots?date=${date}`);
+  const response = await fetch(`${API_URL}/appointments/slots?date=${date}`);
   if (!response.ok) {
     throw new Error("Failed to fetch slots");
   }
-  return await response.json();
+  return response.json();
 };
