@@ -6,6 +6,7 @@ import type {
   CreatePatientData,
   UpdatePatientData,
   AddVisitData,
+  UpdateVisitData,
 } from '../../admin/types/patient.types';
 import * as patientService from '../../admin/services/patientService';
 
@@ -57,6 +58,21 @@ export const addPatientVisit = createAsyncThunk(
   'patients/addVisit',
   async ({ patientId, data }: { patientId: string; data: AddVisitData }) => {
     return await patientService.addVisit(patientId, data);
+  }
+);
+
+export const updatePatientVisit = createAsyncThunk(
+  'patients/updateVisit',
+  async ({ visitId, data }: { visitId: string; data: UpdateVisitData }) => {
+    return await patientService.updateVisit(visitId, data);
+  }
+);
+
+export const deletePatientVisit = createAsyncThunk(
+  'patients/deleteVisit',
+  async (visitId: string) => {
+    await patientService.deleteVisit(visitId);
+    return visitId;
   }
 );
 
@@ -177,6 +193,45 @@ const patientSlice = createSlice({
       .addCase(addPatientVisit.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to add visit';
+      });
+
+    // Update visit
+    builder
+      .addCase(updatePatientVisit.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updatePatientVisit.fulfilled, (state, action) => {
+        state.loading = false;
+        if (state.selectedPatient) {
+          const index = state.selectedPatient.visits.findIndex(v => v.id === action.payload.id);
+          if (index !== -1) {
+            state.selectedPatient.visits[index] = action.payload;
+          }
+        }
+      })
+      .addCase(updatePatientVisit.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to update visit';
+      });
+
+    // Delete visit
+    builder
+      .addCase(deletePatientVisit.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deletePatientVisit.fulfilled, (state, action) => {
+        state.loading = false;
+        if (state.selectedPatient) {
+          state.selectedPatient.visits = state.selectedPatient.visits.filter(
+            v => v.id !== action.payload
+          );
+        }
+      })
+      .addCase(deletePatientVisit.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to delete visit';
       });
   },
 });

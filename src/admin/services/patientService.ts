@@ -4,6 +4,7 @@ import type {
   CreatePatientData,
   UpdatePatientData,
   AddVisitData,
+  UpdateVisitData,
   PatientVisit,
   MedicalReport,
 } from '../types/patient.types';
@@ -260,6 +261,126 @@ export const uploadReport = async (visitId: string, file: File): Promise<Medical
     return report;
   } catch (error) {
     console.error('Error uploading report:', error);
+    throw error;
+  }
+};
+
+/**
+ * Update a visit
+ */
+export const updateVisit = async (visitId: string, data: UpdateVisitData): Promise<PatientVisit> => {
+  try {
+    const allVisits = await getAllVisits();
+    const visitIndex = allVisits.findIndex(v => v.id === visitId);
+
+    if (visitIndex === -1) {
+      throw new Error('Visit not found');
+    }
+
+    const currentVisit = allVisits[visitIndex];
+    
+    // Process new report files
+    const newReports: MedicalReport[] = [];
+    if (data.reports && data.reports.length > 0) {
+      for (const file of data.reports) {
+        const fileUrl = isImageFile(file) 
+          ? await compressImage(file, 1200, 0.9)
+          : await fileToBase64(file);
+
+        const report: MedicalReport = {
+          id: generateFileId(),
+          visitId: visitId,
+          fileName: file.name,
+          fileType: getFileTypeCategory(file),
+          fileUrl,
+          uploadedAt: getCurrentISOString(),
+          fileSize: file.size,
+        };
+        newReports.push(report);
+      }
+    }
+
+    // Combine existing kept reports with new ones
+    // If existingReports is not provided, we keep all current reports (safety default),
+    // unless the logic is "replace all", but usually for updates we pass back what we want to keep.
+    // However, in the type definition I made `existingReports` optional. 
+    // Let's assume if it is passed, we filter. If not passed, we might assume no change to existing? 
+    // Or simpler: The UI will pass the full list of "kept" reports.
+    
+    let finalReports = currentVisit.reports;
+    if (data.existingReports) {
+      finalReports = data.existingReports;
+    }
+    
+    finalReports = [...finalReports, ...newReports];
+
+    const updatedVisit: PatientVisit = {
+      ...currentVisit,
+      ...data,
+      reports: finalReports,
+      // Ensure we don't accidentally overwrite with undefined if only partial data came in, 
+      // but `UpdateVisitData` fields are optional.
+      // We should only update fields that are present in `data`.
+      // The spread `...data` above handles it for simple fields, but we need to be careful not to unset things if `data` has undefineds.
+      // Actually `...data` with undefined values does NOT overwrite existing values in JS spread? 
+      // Wait, `{ a: 1, ...{ a: undefined } }` results in `{ a: undefined }`. 
+      // So we need to clean `data` of undefineds or handle explicitly.
+    };
+
+    // Explicitly update fields if provided
+    if (data.visitDate) updatedVisit.visitDate = data.visitDate;
+    if (data.bloodPressure) updatedVisit.bloodPressure = data.bloodPressure;
+    if (data.weight !== undefined) updatedVisit.weight = data.weight;
+    if (data.temperature !== undefined) updatedVisit.temperature = data.temperature;
+    if (data.pulse !== undefined) updatedVisit.pulse = data.pulse;
+    if (data.height !== undefined) updatedVisit.height = data.height;
+    if (data.notes !== undefined) updatedVisit.notes = data.notes;
+    
+    // Reports are already handled.
+
+    allVisits[visitIndex] = updatedVisit;
+    localStorage.setItem(VISITS_STORAGE_KEY, JSON.stringify(allVisits));
+
+    // Update patient's updatedAt timestamp
+    const patients = await getAllPatients();
+    const patientIndex = patients.findIndex(p => p.id === currentVisit.patientId);
+    if (patientIndex !== -1) {
+      patients[patientIndex].updatedAt = getCurrentISOString();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(patients));
+    }
+
+    return updatedVisit;
+  } catch (error) {
+    console.error('Error updating visit:', error);
+    throw error;
+  }
+};
+
+/**
+ * Delete a visit
+ */
+export const deleteVisit = async (visitId: string): Promise<void> => {
+  try {
+    const allVisits = await getAllVisits();
+    const visit = allVisits.find(v => v.id === visitId);
+    
+    if (!visit) {
+        // Already gone, verify effectively deleted.
+        return;
+    }
+
+    const filteredVisits = allVisits.filter(v => v.id !== visitId);
+    localStorage.setItem(VISITS_STORAGE_KEY, JSON.stringify(filteredVisits));
+
+    // Update patient's updatedAt
+    const patients = await getAllPatients();
+    const patientIndex = patients.findIndex(p => p.id === visit.patientId);
+    if (patientIndex !== -1) {
+      patients[patientIndex].updatedAt = getCurrentISOString();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(patients));
+    }
+  } catch (error) {
+    console.error('Error deleting visit:', error);
     throw error;
   }
 };

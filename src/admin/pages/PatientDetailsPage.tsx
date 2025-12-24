@@ -11,11 +11,14 @@ import {
   FiPlus,
 } from 'react-icons/fi';
 import type { RootState, AppDispatch } from '../../store/store';
-import { fetchPatientById, deletePatient, clearSelectedPatient } from '../../store/slices/patientSlice';
+import { fetchPatientById, deletePatient, clearSelectedPatient, deletePatientVisit } from '../../store/slices/patientSlice';
+import type { PatientVisit } from '../types/patient.types';
 import { formatRelativeTime } from '../utils/dateUtils';
 import VisitTimeline from '../components/VisitTimeline.tsx';
 import UpdatePatientModal from '../components/UpdatePatientModal.tsx';
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal.tsx';
+import UpdateVisitModal from '../components/UpdateVisitModal.tsx';
+import DeleteVisitModal from '../components/DeleteVisitModal.tsx';
 
 const PatientDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,6 +28,11 @@ const PatientDetailsPage = () => {
 
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  
+  // Visit Management State
+  const [selectedVisit, setSelectedVisit] = useState<PatientVisit | null>(null);
+  const [showUpdateVisitModal, setShowUpdateVisitModal] = useState(false);
+  const [showDeleteVisitModal, setShowDeleteVisitModal] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -42,6 +50,28 @@ const PatientDetailsPage = () => {
       navigate('/admin/patients');
     } catch (error) {
       console.error('Failed to delete patient:', error);
+    }
+  };
+
+  const handleEditVisit = (visit: PatientVisit) => {
+    setSelectedVisit(visit);
+    setShowUpdateVisitModal(true);
+  };
+
+  const handleDeleteVisit = (visit: PatientVisit) => {
+    setSelectedVisit(visit);
+    setShowDeleteVisitModal(true);
+  };
+
+  const confirmDeleteVisit = async () => {
+    if (selectedVisit) {
+      try {
+        await dispatch(deletePatientVisit(selectedVisit.id)).unwrap();
+        setShowDeleteVisitModal(false);
+        setSelectedVisit(null);
+      } catch (error) {
+        console.error('Failed to delete visit:', error);
+      }
     }
   };
 
@@ -191,7 +221,11 @@ const PatientDetailsPage = () => {
           </button>
         </div>
 
-        <VisitTimeline visits={selectedPatient.visits} />
+        <VisitTimeline 
+          visits={selectedPatient.visits} 
+          onEditVisit={handleEditVisit}
+          onDeleteVisit={handleDeleteVisit}
+        />
       </div>
 
       {/* Modals */}
@@ -209,6 +243,29 @@ const PatientDetailsPage = () => {
           onClose={() => setShowDeleteModal(false)}
           onConfirm={handleDelete}
           patientName={selectedPatient.name}
+        />
+      )}
+
+      {showUpdateVisitModal && selectedVisit && (
+        <UpdateVisitModal
+          isOpen={showUpdateVisitModal}
+          onClose={() => {
+            setShowUpdateVisitModal(false);
+            setSelectedVisit(null);
+          }}
+          visit={selectedVisit}
+        />
+      )}
+
+      {showDeleteVisitModal && selectedVisit && (
+        <DeleteVisitModal
+          isOpen={showDeleteVisitModal}
+          onClose={() => {
+            setShowDeleteVisitModal(false);
+            setSelectedVisit(null);
+          }}
+          onConfirm={confirmDeleteVisit}
+          visitDate={selectedVisit.visitDate}
         />
       )}
     </div>

@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import { FiActivity, FiFileText, FiImage, FiDownload, FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { FiActivity, FiFileText, FiImage, FiDownload, FiChevronDown, FiChevronUp, FiEdit2, FiTrash2 } from 'react-icons/fi';
 import type { PatientVisit } from '../types/patient.types';
 import { formatTimelineDate, sortByDateDesc } from '../utils/dateUtils';
 
 interface VisitTimelineProps {
   visits: PatientVisit[];
+  onEditVisit: (visit: PatientVisit) => void;
+  onDeleteVisit: (visit: PatientVisit) => void;
 }
 
-const VisitTimeline = ({ visits }: VisitTimelineProps) => {
+const VisitTimeline = ({ visits, onEditVisit, onDeleteVisit }: VisitTimelineProps) => {
   const [expandedVisits, setExpandedVisits] = useState<Set<string>>(new Set());
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
@@ -50,7 +52,7 @@ const VisitTimeline = ({ visits }: VisitTimelineProps) => {
               )}
 
               {/* Visit Card */}
-              <div className="relative bg-gray-50 rounded-xl p-5 hover:bg-gray-100 transition">
+              <div className="relative bg-gray-50 rounded-xl p-5 hover:bg-gray-100 transition group">
                 {/* Timeline Dot */}
                 <div className="absolute left-0 top-5 w-10 h-10 bg-teal-600 rounded-full flex items-center justify-center shadow-lg">
                   <FiActivity className="text-white text-lg" />
@@ -65,16 +67,36 @@ const VisitTimeline = ({ visits }: VisitTimelineProps) => {
                         <p className="text-sm text-gray-600 mt-1 line-clamp-2">{visit.notes}</p>
                       )}
                     </div>
-                    <button
-                      onClick={() => toggleVisit(visit.id)}
-                      className="p-2 hover:bg-white rounded-lg transition"
-                    >
-                      {isExpanded ? (
-                        <FiChevronUp className="text-gray-600" />
-                      ) : (
-                        <FiChevronDown className="text-gray-600" />
-                      )}
-                    </button>
+                    <div className="flex items-center gap-2">
+                       {/* Action Buttons (Visible on hover or always on mobile if needed, but we'll make them always visible for clarity or group-hover) */}
+                       <div className="flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); onEditVisit(visit); }}
+                          className="p-2 hover:bg-teal-100 text-teal-600 rounded-lg transition"
+                          title="Edit Visit"
+                        >
+                          <FiEdit2 className="text-lg" />
+                        </button>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); onDeleteVisit(visit); }}
+                          className="p-2 hover:bg-red-100 text-red-600 rounded-lg transition"
+                          title="Delete Visit"
+                        >
+                          <FiTrash2 className="text-lg" />
+                        </button>
+                       </div>
+                      
+                      <button
+                        onClick={() => toggleVisit(visit.id)}
+                        className="p-2 hover:bg-white rounded-lg transition"
+                      >
+                        {isExpanded ? (
+                          <FiChevronUp className="text-gray-600" />
+                        ) : (
+                          <FiChevronDown className="text-gray-600" />
+                        )}
+                      </button>
+                    </div>
                   </div>
 
                   {/* Vital Signs Summary (Always Visible) */}

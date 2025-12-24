@@ -57,6 +57,22 @@ export interface UpdatePatientData {
   photo?: File | string;
 }
 
+// Form data for updating a visit
+export interface UpdateVisitData {
+  visitDate?: string;
+  bloodPressure?: {
+    systolic: number;
+    diastolic: number;
+  };
+  weight?: number;
+  temperature?: number;
+  pulse?: number;
+  height?: number;
+  notes?: string;
+  reports?: File[]; // New reports to add
+  existingReports?: MedicalReport[]; // Existing reports to keep
+}
+
 // Form data for adding a visit
 export interface AddVisitData {
   visitDate: string;

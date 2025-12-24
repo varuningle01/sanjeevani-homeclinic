@@ -6,7 +6,7 @@ export interface Appointment {
   appointmentDate: string; // ISO format date
   appointmentTime: string; // HH:MM format
   problem?: string;
-  status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
+  status: 'confirmed' | 'completed' | 'cancelled';
   createdAt: string;
 }
 

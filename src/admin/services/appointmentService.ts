@@ -29,7 +29,7 @@ const mockAppointments: Appointment[] = [
     appointmentDate: '2025-12-22',
     appointmentTime: '14:00',
     problem: 'Skin allergy consultation',
-    status: 'pending',
+    status: 'confirmed',
     createdAt: '2025-12-21T09:15:00Z',
   },
   {
@@ -49,7 +49,7 @@ const mockAppointments: Appointment[] = [
     appointmentDate: '2025-12-23',
     appointmentTime: '15:00',
     problem: 'Joint pain and stiffness',
-    status: 'pending',
+    status: 'confirmed',
     createdAt: '2025-12-21T16:30:00Z',
   },
   {
@@ -68,7 +68,7 @@ const mockAppointments: Appointment[] = [
     phoneNumber: '+91 32109 87654',
     appointmentDate: '2025-12-24',
     appointmentTime: '13:00',
-    status: 'pending',
+    status: 'confirmed',
     createdAt: '2025-12-21T20:15:00Z',
   },
   {
