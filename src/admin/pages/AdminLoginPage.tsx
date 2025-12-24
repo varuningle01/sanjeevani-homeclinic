@@ -11,7 +11,7 @@ const AdminLoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isAuthenticated, loading, error: authError } = useSelector(
+  const { isAuthenticated, loading } = useSelector(
     (state: RootState) => state.auth
   );
 
