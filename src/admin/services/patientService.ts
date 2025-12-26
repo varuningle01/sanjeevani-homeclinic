@@ -8,19 +8,63 @@ import type {
   PatientVisit,
   MedicalReport,
 } from '../types/patient.types';
-import { getCurrentISOString } from '../utils/dateUtils';
-import { fileToBase64, compressImage, isImageFile, getFileTypeCategory, generateFileId } from '../utils/fileUtils';
 
-const STORAGE_KEY = 'sanjeevani_patients';
-const VISITS_STORAGE_KEY = 'sanjeevani_visits';
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+
+const getAuthHeader = (): Record<string, string> => {
+  const savedAuth = localStorage.getItem("adminAuth");
+  if (savedAuth) {
+    const { token } = JSON.parse(savedAuth);
+    return { Authorization: `Bearer ${token}` };
+  }
+  return {};
+};
 
 /**
- * Get all patients from localStorage
+ * Data mapping utilities
+ */
+const mapBackendToPatient = (bp: any): Patient => ({
+  id: bp._id,
+  name: bp.name,
+  age: bp.age,
+  gender: bp.gender.charAt(0).toUpperCase() + bp.gender.slice(1),
+  mobileNumber: bp.mobile,
+  photoUrl: bp.profilePhoto,
+  createdAt: bp.createdAt,
+  updatedAt: bp.updatedAt,
+});
+
+const mapBackendToVisit = (bv: any): PatientVisit => ({
+  id: bv._id,
+  patientId: bv.patientId,
+  visitDate: bv.visitDate,
+  bloodPressure: bv.bloodPressure,
+  weight: bv.weight,
+  temperature: bv.temperature,
+  pulse: bv.pulse,
+  height: bv.height,
+  notes: bv.notes,
+  reports: bv.reports.map((r: any) => ({
+    id: r._id,
+    visitId: bv._id,
+    fileName: r.fileName || 'Report',
+    fileType: r.type,
+    fileUrl: r.url,
+    uploadedAt: r.uploadedAt,
+  })),
+});
+
+/**
+ * Get all patients from backend
  */
 export const getAllPatients = async (): Promise<Patient[]> => {
   try {
-    const data = localStorage.getItem(STORAGE_KEY);
-    return data ? JSON.parse(data) : [];
+    const response = await fetch(`${API_URL}/patients`, {
+      headers: getAuthHeader(),
+    });
+    if (!response.ok) throw new Error("Failed to fetch patients");
+    const data = await response.json();
+    return data.map(mapBackendToPatient);
   } catch (error) {
     console.error('Error fetching patients:', error);
     return [];
@@ -32,16 +76,19 @@ export const getAllPatients = async (): Promise<Patient[]> => {
  */
 export const getPatientById = async (id: string): Promise<PatientWithHistory | null> => {
   try {
-    const patients = await getAllPatients();
-    const patient = patients.find(p => p.id === id);
-    
-    if (!patient) return null;
+    const [pResponse, vResponse] = await Promise.all([
+      fetch(`${API_URL}/patients/${id}`, { headers: getAuthHeader() }),
+      fetch(`${API_URL}/patients/${id}/visits`, { headers: getAuthHeader() }),
+    ]);
 
-    const visits = await getPatientVisits(id);
-    
+    if (!pResponse.ok) return null;
+
+    const patientData = await pResponse.json();
+    const visitsData = await vResponse.json();
+
     return {
-      ...patient,
-      visits,
+      ...mapBackendToPatient(patientData),
+      visits: Array.isArray(visitsData) ? visitsData.map(mapBackendToVisit) : [],
     };
   } catch (error) {
     console.error('Error fetching patient:', error);
@@ -54,33 +101,28 @@ export const getPatientById = async (id: string): Promise<PatientWithHistory | n
  */
 export const createPatient = async (data: CreatePatientData): Promise<Patient> => {
   try {
-    const patients = await getAllPatients();
-    
-    let photoUrl: string | undefined;
-    if (data.photo) {
-      if (typeof data.photo === 'string') {
-        photoUrl = data.photo;
-      } else {
-        // Compress and convert to base64
-        photoUrl = await compressImage(data.photo);
-      }
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('age', data.age.toString());
+    formData.append('gender', data.gender.toLowerCase());
+    formData.append('mobile', data.mobileNumber);
+    if (data.photo instanceof File) {
+      formData.append('profilePhoto', data.photo);
     }
 
-    const newPatient: Patient = {
-      id: `patient_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      name: data.name,
-      age: data.age,
-      gender: data.gender,
-      mobileNumber: data.mobileNumber,
-      photoUrl,
-      createdAt: getCurrentISOString(),
-      updatedAt: getCurrentISOString(),
-    };
+    const response = await fetch(`${API_URL}/patients`, {
+      method: 'POST',
+      headers: getAuthHeader(),
+      body: formData,
+    });
 
-    patients.push(newPatient);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(patients));
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to create patient');
+    }
 
-    return newPatient;
+    const result = await response.json();
+    return mapBackendToPatient(result.patient);
   } catch (error) {
     console.error('Error creating patient:', error);
     throw error;
@@ -92,33 +134,27 @@ export const createPatient = async (data: CreatePatientData): Promise<Patient> =
  */
 export const updatePatient = async (id: string, data: UpdatePatientData): Promise<Patient> => {
   try {
-    const patients = await getAllPatients();
-    const index = patients.findIndex(p => p.id === id);
-
-    if (index === -1) {
-      throw new Error('Patient not found');
+    const formData = new FormData();
+    if (data.name) formData.append('name', data.name);
+    if (data.age) formData.append('age', data.age.toString());
+    if (data.gender) formData.append('gender', data.gender.toLowerCase());
+    if (data.mobileNumber) formData.append('mobile', data.mobileNumber);
+    if (data.photo instanceof File) {
+      formData.append('profilePhoto', data.photo);
+    } else if (typeof data.photo === 'string') {
+        // Handle existing photo if needed, though typically we just don't send anything if it didn't change
     }
 
-    let photoUrl = patients[index].photoUrl;
-    if (data.photo) {
-      if (typeof data.photo === 'string') {
-        photoUrl = data.photo;
-      } else {
-        photoUrl = await compressImage(data.photo);
-      }
-    }
+    const response = await fetch(`${API_URL}/patients/${id}`, {
+      method: 'PUT',
+      headers: getAuthHeader(),
+      body: formData,
+    });
 
-    const updatedPatient: Patient = {
-      ...patients[index],
-      ...data,
-      photoUrl,
-      updatedAt: getCurrentISOString(),
-    };
+    if (!response.ok) throw new Error('Failed to update patient');
 
-    patients[index] = updatedPatient;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(patients));
-
-    return updatedPatient;
+    const result = await response.json();
+    return mapBackendToPatient(result);
   } catch (error) {
     console.error('Error updating patient:', error);
     throw error;
@@ -130,43 +166,14 @@ export const updatePatient = async (id: string, data: UpdatePatientData): Promis
  */
 export const deletePatient = async (id: string): Promise<void> => {
   try {
-    const patients = await getAllPatients();
-    const filtered = patients.filter(p => p.id !== id);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
-
-    // Also delete all visits for this patient
-    const allVisits = await getAllVisits();
-    const filteredVisits = allVisits.filter(v => v.patientId !== id);
-    localStorage.setItem(VISITS_STORAGE_KEY, JSON.stringify(filteredVisits));
+    const response = await fetch(`${API_URL}/patients/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeader(),
+    });
+    if (!response.ok) throw new Error('Failed to delete patient');
   } catch (error) {
     console.error('Error deleting patient:', error);
     throw error;
-  }
-};
-
-/**
- * Get all visits from localStorage
- */
-const getAllVisits = async (): Promise<PatientVisit[]> => {
-  try {
-    const data = localStorage.getItem(VISITS_STORAGE_KEY);
-    return data ? JSON.parse(data) : [];
-  } catch (error) {
-    console.error('Error fetching visits:', error);
-    return [];
-  }
-};
-
-/**
- * Get visits for a specific patient
- */
-export const getPatientVisits = async (patientId: string): Promise<PatientVisit[]> => {
-  try {
-    const allVisits = await getAllVisits();
-    return allVisits.filter(v => v.patientId === patientId);
-  } catch (error) {
-    console.error('Error fetching patient visits:', error);
-    return [];
   }
 };
 
@@ -175,92 +182,33 @@ export const getPatientVisits = async (patientId: string): Promise<PatientVisit[
  */
 export const addVisit = async (patientId: string, data: AddVisitData): Promise<PatientVisit> => {
   try {
-    const allVisits = await getAllVisits();
-    
-    // Process report files
-    const reports: MedicalReport[] = [];
-    if (data.reports && data.reports.length > 0) {
-      for (const file of data.reports) {
-        const fileUrl = isImageFile(file) 
-          ? await compressImage(file, 1200, 0.9)
-          : await fileToBase64(file);
+    const formData = new FormData();
+    formData.append('visitDate', data.visitDate);
+    if (data.notes) formData.append('notes', data.notes);
+    if (data.bloodPressure) formData.append('bloodPressure', JSON.stringify(data.bloodPressure));
+    if (data.weight) formData.append('weight', data.weight.toString());
+    if (data.temperature) formData.append('temperature', data.temperature.toString());
+    if (data.pulse) formData.append('pulse', data.pulse.toString());
+    if (data.height) formData.append('height', data.height.toString());
 
-        const report: MedicalReport = {
-          id: generateFileId(),
-          visitId: '', // Will be set after visit is created
-          fileName: file.name,
-          fileType: getFileTypeCategory(file),
-          fileUrl,
-          uploadedAt: getCurrentISOString(),
-          fileSize: file.size,
-        };
-        reports.push(report);
-      }
+    if (data.reports) {
+      data.reports.forEach((file) => {
+        formData.append('reports', file);
+      });
     }
 
-    const newVisit: PatientVisit = {
-      id: `visit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      patientId,
-      visitDate: data.visitDate || getCurrentISOString(),
-      bloodPressure: data.bloodPressure,
-      weight: data.weight,
-      temperature: data.temperature,
-      pulse: data.pulse,
-      height: data.height,
-      notes: data.notes,
-      reports: reports.map(r => ({ ...r, visitId: `visit_${Date.now()}` })),
-    };
+    const response = await fetch(`${API_URL}/patients/${patientId}/visits`, {
+      method: 'POST',
+      headers: getAuthHeader(),
+      body: formData,
+    });
 
-    allVisits.push(newVisit);
-    localStorage.setItem(VISITS_STORAGE_KEY, JSON.stringify(allVisits));
+    if (!response.ok) throw new Error('Failed to add visit');
 
-    // Update patient's updatedAt timestamp
-    const patients = await getAllPatients();
-    const patientIndex = patients.findIndex(p => p.id === patientId);
-    if (patientIndex !== -1) {
-      patients[patientIndex].updatedAt = getCurrentISOString();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(patients));
-    }
-
-    return newVisit;
+    const result = await response.json();
+    return mapBackendToVisit(result);
   } catch (error) {
     console.error('Error adding visit:', error);
-    throw error;
-  }
-};
-
-/**
- * Upload report to an existing visit
- */
-export const uploadReport = async (visitId: string, file: File): Promise<MedicalReport> => {
-  try {
-    const allVisits = await getAllVisits();
-    const visitIndex = allVisits.findIndex(v => v.id === visitId);
-
-    if (visitIndex === -1) {
-      throw new Error('Visit not found');
-    }
-
-    const fileUrl = isImageFile(file)
-      ? await compressImage(file, 1200, 0.9)
-      : await fileToBase64(file);
-
-    const report: MedicalReport = {
-      id: generateFileId(),
-      visitId,
-      fileName: file.name,
-      fileType: getFileTypeCategory(file),
-      fileUrl,
-      uploadedAt: getCurrentISOString(),
-      fileSize: file.size,
-    };
-
-    allVisits[visitIndex].reports.push(report);
-    localStorage.setItem(VISITS_STORAGE_KEY, JSON.stringify(allVisits));
-
-    return report;
-  } catch (error) {
-    console.error('Error uploading report:', error);
     throw error;
   }
 };
@@ -270,86 +218,42 @@ export const uploadReport = async (visitId: string, file: File): Promise<Medical
  */
 export const updateVisit = async (visitId: string, data: UpdateVisitData): Promise<PatientVisit> => {
   try {
-    const allVisits = await getAllVisits();
-    const visitIndex = allVisits.findIndex(v => v.id === visitId);
+    const formData = new FormData();
+    if (data.visitDate) formData.append('visitDate', data.visitDate);
+    if (data.notes !== undefined) formData.append('notes', data.notes);
+    if (data.bloodPressure) formData.append('bloodPressure', JSON.stringify(data.bloodPressure));
+    if (data.weight !== undefined) formData.append('weight', data.weight.toString());
+    if (data.temperature !== undefined) formData.append('temperature', data.temperature.toString());
+    if (data.pulse !== undefined) formData.append('pulse', data.pulse.toString());
+    if (data.height !== undefined) formData.append('height', data.height.toString());
 
-    if (visitIndex === -1) {
-      throw new Error('Visit not found');
-    }
-
-    const currentVisit = allVisits[visitIndex];
-    
-    // Process new report files
-    const newReports: MedicalReport[] = [];
-    if (data.reports && data.reports.length > 0) {
-      for (const file of data.reports) {
-        const fileUrl = isImageFile(file) 
-          ? await compressImage(file, 1200, 0.9)
-          : await fileToBase64(file);
-
-        const report: MedicalReport = {
-          id: generateFileId(),
-          visitId: visitId,
-          fileName: file.name,
-          fileType: getFileTypeCategory(file),
-          fileUrl,
-          uploadedAt: getCurrentISOString(),
-          fileSize: file.size,
-        };
-        newReports.push(report);
-      }
-    }
-
-    // Combine existing kept reports with new ones
-    // If existingReports is not provided, we keep all current reports (safety default),
-    // unless the logic is "replace all", but usually for updates we pass back what we want to keep.
-    // However, in the type definition I made `existingReports` optional. 
-    // Let's assume if it is passed, we filter. If not passed, we might assume no change to existing? 
-    // Or simpler: The UI will pass the full list of "kept" reports.
-    
-    let finalReports = currentVisit.reports;
     if (data.existingReports) {
-      finalReports = data.existingReports;
-    }
-    
-    finalReports = [...finalReports, ...newReports];
-
-    const updatedVisit: PatientVisit = {
-      ...currentVisit,
-      ...data,
-      reports: finalReports,
-      // Ensure we don't accidentally overwrite with undefined if only partial data came in, 
-      // but `UpdateVisitData` fields are optional.
-      // We should only update fields that are present in `data`.
-      // The spread `...data` above handles it for simple fields, but we need to be careful not to unset things if `data` has undefineds.
-      // Actually `...data` with undefined values does NOT overwrite existing values in JS spread? 
-      // Wait, `{ a: 1, ...{ a: undefined } }` results in `{ a: undefined }`. 
-      // So we need to clean `data` of undefineds or handle explicitly.
-    };
-
-    // Explicitly update fields if provided
-    if (data.visitDate) updatedVisit.visitDate = data.visitDate;
-    if (data.bloodPressure) updatedVisit.bloodPressure = data.bloodPressure;
-    if (data.weight !== undefined) updatedVisit.weight = data.weight;
-    if (data.temperature !== undefined) updatedVisit.temperature = data.temperature;
-    if (data.pulse !== undefined) updatedVisit.pulse = data.pulse;
-    if (data.height !== undefined) updatedVisit.height = data.height;
-    if (data.notes !== undefined) updatedVisit.notes = data.notes;
-    
-    // Reports are already handled.
-
-    allVisits[visitIndex] = updatedVisit;
-    localStorage.setItem(VISITS_STORAGE_KEY, JSON.stringify(allVisits));
-
-    // Update patient's updatedAt timestamp
-    const patients = await getAllPatients();
-    const patientIndex = patients.findIndex(p => p.id === currentVisit.patientId);
-    if (patientIndex !== -1) {
-      patients[patientIndex].updatedAt = getCurrentISOString();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(patients));
+        // Map MedicalReport back to what backend expects
+        const reportsToKeep = data.existingReports.map(r => ({
+            url: r.fileUrl,
+            type: r.fileType,
+            fileName: r.fileName,
+            _id: r.id
+        }));
+        formData.append('existingReports', JSON.stringify(reportsToKeep));
     }
 
-    return updatedVisit;
+    if (data.reports) {
+      data.reports.forEach((file) => {
+        formData.append('reports', file);
+      });
+    }
+
+    const response = await fetch(`${API_URL}/patients/visits/${visitId}`, {
+      method: 'PUT',
+      headers: getAuthHeader(),
+      body: formData,
+    });
+
+    if (!response.ok) throw new Error('Failed to update visit');
+
+    const result = await response.json();
+    return mapBackendToVisit(result);
   } catch (error) {
     console.error('Error updating visit:', error);
     throw error;
@@ -361,26 +265,23 @@ export const updateVisit = async (visitId: string, data: UpdateVisitData): Promi
  */
 export const deleteVisit = async (visitId: string): Promise<void> => {
   try {
-    const allVisits = await getAllVisits();
-    const visit = allVisits.find(v => v.id === visitId);
-    
-    if (!visit) {
-        // Already gone, verify effectively deleted.
-        return;
-    }
-
-    const filteredVisits = allVisits.filter(v => v.id !== visitId);
-    localStorage.setItem(VISITS_STORAGE_KEY, JSON.stringify(filteredVisits));
-
-    // Update patient's updatedAt
-    const patients = await getAllPatients();
-    const patientIndex = patients.findIndex(p => p.id === visit.patientId);
-    if (patientIndex !== -1) {
-      patients[patientIndex].updatedAt = getCurrentISOString();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(patients));
-    }
+    const response = await fetch(`${API_URL}/patients/visits/${visitId}`, {
+      method: 'DELETE',
+      headers: getAuthHeader(),
+    });
+    if (!response.ok) throw new Error('Failed to delete visit');
   } catch (error) {
     console.error('Error deleting visit:', error);
     throw error;
   }
+};
+
+// Legacy stubs - no longer needed with new API management but kept for interface signature if needed
+export const uploadReport = async (visitId: string, file: File): Promise<MedicalReport> => {
+    throw new Error('Use updateVisit to add reports');
+};
+export const getPatientVisits = async (patientId: string): Promise<PatientVisit[]> => {
+    const response = await fetch(`${API_URL}/patients/${patientId}/visits`, { headers: getAuthHeader() });
+    const data = await response.json();
+    return data.map(mapBackendToVisit);
 };
