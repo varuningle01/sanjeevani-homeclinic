@@ -7,7 +7,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { RootState } from "../store/store";
 import ClinicLogo from "./ClinicLogo";
 
+import { useTenant } from "../context/TenantContext";
+
 function Navbar() {
+  const { config } = useTenant();
   const { t, i18n } = useTranslation();
   const isOnline = useSelector((state: RootState) => state.clinic.isOnline);
   const location = useLocation();
@@ -45,9 +48,9 @@ function Navbar() {
 
           <div>
             <h1 className="text-lg font-bold leading-tight text-gray-900">
-              {t("clinicName")}
+              {config?.clinicName || t("clinicName")}
             </h1>
-            <p className="text-sm text-gray-500 -mt-0.5">{t("doctorName")}</p>
+            <p className="text-sm text-gray-500 -mt-0.5">{config?.doctorName || t("doctorName")}</p>
           </div>
         </Link>
 
@@ -59,8 +62,8 @@ function Navbar() {
               to={item.path}
               className={`relative pb-1 transition ${
                 isActive(item.path)
-                  ? "text-[#0B7A75] font-semibold"
-                  : "text-gray-700 hover:text-[#0B7A75]"
+                  ? "text-primary font-semibold"
+                  : "text-gray-700 hover:text-primary"
               }`}
             >
               {item.label}
@@ -68,7 +71,7 @@ function Navbar() {
               {isActive(item.path) && (
                 <motion.div
                   layoutId="active-pill"
-                  className="absolute left-0 right-0 -bottom-1 h-[2px] bg-[#0B7A75] rounded-full"
+                  className="absolute left-0 right-0 -bottom-1 h-[2px] bg-primary rounded-full"
                   transition={{ type: "spring", stiffness: 350, damping: 30 }}
                 />
               )}
@@ -117,8 +120,8 @@ function Navbar() {
                   onClick={() => setOpen(false)}
                   className={`transition ${
                     isActive(item.path)
-                      ? "text-[#0B7A75] font-semibold"
-                      : "text-gray-700 hover:text-[#0B7A75]"
+                      ? "text-primary font-semibold"
+                      : "text-gray-700 hover:text-primary"
                   }`}
                 >
                   {item.label}

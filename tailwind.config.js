@@ -4,8 +4,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#0a837f",
-        primaryDark: "#066b64",
+        primary: "var(--primary)",
+        primaryHover: "var(--primary-hover)",
+        primaryLight: "var(--primary-light)",
         secondary: "#f0a22e",
         muted: "#f1f4f6",
         footerDark: "#0b0f14",

@@ -8,9 +8,11 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import { useTenant } from "../context/TenantContext";
 
 export default function Footer() {
   const { t } = useTranslation();
+  const { config } = useTenant();
 
   return (
     <footer className="bg-[#F4FAFB] text-gray-800 pt-16 pb-10 w-full border-t border-gray-200">
@@ -18,68 +20,73 @@ export default function Footer() {
       <div className="w-full max-w-[1300px] mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
         {/* Clinic Info */}
         <div className="space-y-3">
-          <h3 className="text-2xl font-bold text-[#0B7A75]">
-            {t("clinicName")}
+          <h3 className="text-2xl font-bold text-primary">
+            {config?.clinicName || t("clinicName")}
           </h3>
-          <p className="text-sm">{t("doctorName")}</p>
-          <p className="text-sm text-gray-600">{t("specialization")}</p>
+          <p className="text-sm">{config?.doctorName || t("doctorName")}</p>
+          <p className="text-sm text-gray-600">{config?.specialization || t("specialization")}</p>
         </div>
 
         {/* Contact Section */}
         <div className="space-y-5">
-          <h4 className="font-semibold text-lg text-[#0B7A75]">
+          <h4 className="font-semibold text-lg text-primary">
             {t("contact.title")}
           </h4>
 
           {/* Address */}
           <div className="flex items-start gap-3 text-sm text-gray-700">
-            <FaMapMarkerAlt className="text-[#0B7A75] mt-1" />
+            <FaMapMarkerAlt className="text-primary mt-1" />
             <p>
               <strong className="text-gray-900">{t("contact.address")}:</strong>
               <br />
-              {t("contact.addressLine1")}
               <br />
-              {t("contact.addressLine2")}
+              {config?.addressLine1 || t("contact.addressLine1")}
+              {config?.addressLine2 && (
+                <>
+                  <br />
+                  {config.addressLine2}
+                </>
+              )}
             </p>
           </div>
 
           {/* Phone */}
           <div className="flex items-start gap-3 text-sm text-gray-700">
-            <FaPhoneAlt className="text-[#0B7A75] mt-1" />
+            <FaPhoneAlt className="text-primary mt-1" />
             <p>
               <strong className="text-gray-900">{t("contact.phone")}:</strong>
               <br />
-              +91 {t("contact.phoneNumber")}
+              {config?.phoneNumber || `+91 ${t("contact.phoneNumber")}`}
             </p>
           </div>
 
           {/* Timings */}
           <div className="flex items-start gap-3 text-sm text-gray-700">
-            <FaClock className="text-[#0B7A75] mt-1" />
+            <FaClock className="text-primary mt-1" />
             <div className="space-y-1">
               <p>
                 <span className="font-medium text-gray-900">
                   {t("contact.morning")}:
                 </span>{" "}
-                {t("contact.morningTime")}
+                {config?.timings?.morning || t("contact.morningTime")}
               </p>
 
               <p>
                 <span className="font-medium text-gray-900">
                   {t("contact.afternoon")}:
                 </span>{" "}
-                {t("contact.afternoonTime")}
+                {config?.timings?.afternoon || t("contact.afternoonTime")}
               </p>
 
               <p>
                 <span className="font-medium text-gray-900">
                   {t("contact.evening")}:
                 </span>{" "}
-                {t("contact.eveningTime")}
+                {config?.timings?.evening || t("contact.eveningTime")}
               </p>
 
               <p className="text-[#D9534F] font-semibold pt-1">
-                {t("contact.closed")}
+                {config?.timings?.closedDay || t("contact.closed")}
               </p>
             </div>
           </div>
@@ -87,27 +94,27 @@ export default function Footer() {
 
         {/* Quick Links */}
         <div>
-          <h4 className="font-semibold text-lg mb-4 text-[#0B7A75]">
+          <h4 className="font-semibold text-lg mb-4 text-primary">
             {t("footer.quickLinks")}
           </h4>
 
           <div className="space-y-3 text-sm text-gray-700 flex flex-col">
-            <Link to="/" className="hover:text-[#0B7A75] transition">
+            <Link to="/" className="hover:text-primary transition">
               {t("nav.home")}
             </Link>
-            <Link to="/about" className="hover:text-[#0B7A75] transition">
+            <Link to="/about" className="hover:text-primary transition">
               {t("nav.about")}
             </Link>
-            <Link to="/gallery" className="hover:text-[#0B7A75] transition">
+            <Link to="/gallery" className="hover:text-primary transition">
               {t("gallery.title")}
             </Link>
-            <Link to="/appointment" className="hover:text-[#0B7A75] transition">
+            <Link to="/appointment" className="hover:text-primary transition">
               {t("nav.appointment")}
             </Link>
-            <Link to="/contact" className="hover:text-[#0B7A75] transition">
+            <Link to="/contact" className="hover:text-primary transition">
               {t("nav.contact")}
             </Link>
-            <Link to="/admin/login" className="hover:text-[#0B7A75] transition">
+            <Link to="/admin/login" className="hover:text-primary transition">
               {t("admin.login")}
             </Link>
           </div>
@@ -115,18 +122,18 @@ export default function Footer() {
 
         {/* Socials */}
         <div>
-          <h4 className="font-semibold text-lg mb-4 text-[#0B7A75]">
+          <h4 className="font-semibold text-lg mb-4 text-primary">
             {t("footer.followUs")}
           </h4>
 
           <div className="flex gap-4 text-2xl text-gray-500">
-            <a href="#" className="hover:text-[#0B7A75] transition">
+            <a href="#" className="hover:text-primary transition">
               <FaFacebook />
             </a>
-            <a href="#" className="hover:text-[#0B7A75] transition">
+            <a href="#" className="hover:text-primary transition">
               <FaInstagram />
             </a>
-            <a href="#" className="hover:text-[#0B7A75] transition">
+            <a href="#" className="hover:text-primary transition">
               <FaYoutube />
             </a>
           </div>
@@ -138,7 +145,7 @@ export default function Footer() {
         <div className="h-60 sm:h-72 md:h-80 overflow-hidden rounded-xl shadow-lg border border-gray-200">
           <iframe
             title="clinic-location"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d932.9502400788441!2d77.01100396956932!3d20.71830559880341!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd72f00463bc409%3A0x9c8c72c1594ed5b1!2sSanjeevani%20Homoeo%20Clinic!5e0!3m2!1sen!2sin!4v1766599742342!5m2!1sen!2sin"
+            src={config?.googleMapsUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d932.9502400788441!2d77.01100396956932!3d20.71830559880341!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd72f00463bc409%3A0x9c8c72c1594ed5b1!2sSanjeevani%20Homoeo%20Clinic!5e0!3m2!1sen!2sin!4v1766599742342!5m2!1sen!2sin"}
             className="w-full h-full"
             loading="lazy"
           ></iframe>
@@ -147,7 +154,7 @@ export default function Footer() {
 
       {/* Copyright */}
       <p className="text-center text-sm mt-10 text-gray-500">
-        © {new Date().getFullYear()} {t("clinicName")}. {t("footer.rights")}.
+        © {new Date().getFullYear()} {config?.clinicName || t("clinicName")}. {t("footer.rights")}.
       </p>
     </footer>
   );

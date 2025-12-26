@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useTranslation } from "react-i18next";
-import doctorPhoto from "../assets/prashant-doctor.png";
+import { useTenant } from "../context/TenantContext";
+import doctorPhotoDefault from "../assets/prashant-doctor.png";
 
 /* --- Service Images (High-Quality) --- */
 const serviceData = [
@@ -49,29 +50,38 @@ const serviceData = [
 
 function HomePage() {
   const { t } = useTranslation();
+  const { config } = useTenant();
+
+  const services = config?.services?.length ? config.services : serviceData.map(s => ({
+    title: t(`services.${s.key}`),
+    image: s.image,
+    description: ""
+  }));
+
+  const doctorImage = config?.assets?.doctorImage || doctorPhotoDefault;
 
   return (
-    <div className="bg-[#f0fdfa] w-full min-h-screen">
+    <div className="bg-primaryLight w-full min-h-screen">
       <Navbar />
 
       {/* ================= HERO ================= */}
-      <section className="py-16 bg-gradient-to-br from-teal-50 via-[#f0fdfa] to-white">
+      <section className="py-16 bg-gradient-to-br from-primaryLight via-white to-white">
         <div className="max-w-[1300px] mx-auto px-4 md:px-10 grid md:grid-cols-2 gap-12 items-center">
           {/* Left Text */}
           <div>
-            <p className="text-teal-600 font-semibold text-sm mb-2">
+            <p className="text-primary font-semibold text-sm mb-2">
               {t("welcome")}
             </p>
 
             <h1 className="text-3xl md:text-5xl font-extrabold leading-tight text-gray-900 mb-4">
-              {t("clinicName")}
+              {config?.clinicName || t("clinicName")}
             </h1>
 
-            <h2 className="text-xl text-teal-700 font-semibold mb-2">
-              {t("doctorName")}
+            <h2 className="text-xl text-primary font-semibold mb-2">
+              {config?.doctorName || t("doctorName")}
             </h2>
 
-            <p className="text-gray-700 mb-4">{t("specialization")}</p>
+            <p className="text-gray-700 mb-4">{config?.specialization || t("specialization")}</p>
 
             <p className="text-gray-900 text-lg font-medium mb-8">
               {t("hero.tagline")}
@@ -81,14 +91,14 @@ function HomePage() {
             <div className="flex flex-wrap gap-4">
               <Link
                 to="/appointment"
-                className="bg-teal-600 text-white px-6 py-3 rounded-lg shadow hover:bg-teal-700 transition font-medium"
+                className="bg-primary text-white px-6 py-3 rounded-lg shadow hover:bg-primaryHover transition font-medium"
               >
                 {t("hero.cta")}
               </Link>
 
               <Link
                 to="/about"
-                className="border border-teal-600 text-teal-700 px-6 py-3 rounded-lg hover:bg-teal-50 transition font-medium"
+                className="border border-primary text-primary px-6 py-3 rounded-lg hover:bg-primaryLight transition font-medium"
               >
                 {t("hero.learnMore")}
               </Link>
@@ -97,10 +107,10 @@ function HomePage() {
 
           {/* Doctor Image */}
           <div className="flex justify-center">
-            <div className="w-64 h-80 md:w-80 md:h-96 bg-white border border-teal-100 rounded-3xl overflow-hidden shadow-xl">
+            <div className="w-64 h-80 md:w-80 md:h-96 bg-white border border-primaryLight rounded-3xl overflow-hidden shadow-xl">
               <img
-                src={doctorPhoto}
-                alt={t("doctorName")}
+                src={doctorImage}
+                alt={config?.doctorName || t("doctorName")}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -116,18 +126,18 @@ function HomePage() {
           </h2>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-            {serviceData.map((item) => (
+            {services.map((item, idx) => (
               <div
-                key={item.key}
-                className="bg-white rounded-2xl border border-teal-100 shadow-sm hover:shadow-lg transition-all"
+                key={idx}
+                className="bg-white rounded-2xl border border-primaryLight shadow-sm hover:shadow-lg transition-all"
               >
                 <img
                   src={item.image}
-                  alt={t(`services.${item.key}`)}
+                  alt={item.title}
                   className="w-full h-40 sm:h-48 object-cover rounded-t-2xl"
                 />
                 <p className="p-4 font-semibold text-gray-900">
-                  {t(`services.${item.key}`)}
+                  {item.title}
                 </p>
               </div>
             ))}
@@ -136,7 +146,7 @@ function HomePage() {
       </section>
 
       {/* ================= CTA STRIP ================= */}
-      <section className="py-16 bg-gradient-to-r from-teal-600 to-teal-700 text-white">
+      <section className="py-16 bg-gradient-to-r from-primary to-primaryHover text-white">
         <div className="max-w-3xl mx-auto text-center px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             {t("appointment.title")}
@@ -145,7 +155,7 @@ function HomePage() {
 
           <Link
             to="/appointment"
-            className="bg-white text-teal-700 px-8 py-3 rounded-lg font-semibold shadow hover:bg-teal-50 transition"
+            className="bg-white text-primary px-8 py-3 rounded-lg font-semibold shadow hover:bg-primaryLight transition"
           >
             {t("hero.cta")}
           </Link>

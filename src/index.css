@@ -16,9 +16,13 @@ body {
   font-family: system-ui, sans-serif;
 }
 :root {
-  --primary: #2563eb;
-  --primaryLight: #3b82f6;
-  --primaryDark: #1e40af;
+  --primary: #0d9488; /* teal-600 */
+  --primary-hover: #0f766e; /* teal-700 */
+  --primary-light: #f0fdfa; /* teal-50 */
+  
+  --secondary: #2563eb;
+  --secondaryLight: #3b82f6;
+  --secondaryDark: #1e40af;
   --accent: #0ea5e9;
 
   --bgSoft: #f8fafc;

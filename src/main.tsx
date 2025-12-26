@@ -6,13 +6,16 @@ import { store } from "./store/store";
 import App from "./App";
 import "./i18n";
 import "./index.css";
+import { TenantProvider } from "./context/TenantContext";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <TenantProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </TenantProvider>
     </Provider>
   </StrictMode>
 );

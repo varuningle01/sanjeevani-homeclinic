@@ -1,4 +1,18 @@
+import { useTenant } from "../context/TenantContext";
+
 const ClinicLogo = ({ className = "w-16 h-16" }) => {
+  const { config } = useTenant();
+
+  if (config?.branding?.logoUrl) {
+    return (
+      <img
+        src={config.branding.logoUrl}
+        alt={config.clinicName}
+        className={`${className} object-contain`}
+      />
+    );
+  }
+
   return (
     <svg
       className={className}
@@ -9,8 +23,8 @@ const ClinicLogo = ({ className = "w-16 h-16" }) => {
     >
       <defs>
         <linearGradient id="tealGradient" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#2bb2a9" />
-          <stop offset="100%" stopColor="#0d8c83" />
+          <stop offset="0%" stopColor="var(--primary)" />
+          <stop offset="100%" stopColor="var(--primary-hover)" />
         </linearGradient>
       </defs>
 
