@@ -84,7 +84,7 @@ function Navbar() {
           value={i18n.language}
           onChange={(e) => i18n.changeLanguage(e.target.value)}
           className="hidden md:block bg-white border border-gray-300 text-gray-700 text-sm rounded-md px-3 py-1.5 shadow-sm 
-            focus:outline-none focus:ring-2 focus:ring-[#0B7A75]/40 transition"
+            focus:outline-none focus:ring-2 focus:ring-primary/40 transition"
         >
           <option value="en">English</option>
           <option value="hi">हिंदी</option>
@@ -133,7 +133,7 @@ function Navbar() {
                 value={i18n.language}
                 onChange={(e) => i18n.changeLanguage(e.target.value)}
                 className="bg-gray-100 border border-gray-300 text-gray-700 text-base rounded-md px-3 py-2 shadow-sm 
-                  focus:outline-none focus:ring-2 focus:ring-[#0B7A75]/40 transition"
+                  focus:outline-none focus:ring-2 focus:ring-primary/40 transition"
               >
                 <option value="en">English</option>
                 <option value="hi">हिंदी</option>

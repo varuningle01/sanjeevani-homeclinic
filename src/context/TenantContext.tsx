@@ -55,19 +55,12 @@ export const TenantProvider = ({ children }: { children: ReactNode }) => {
   const [config, setConfig] = useState<TenantConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentTenantId] = useState<string | null>(
-    localStorage.getItem("activeTenantId")
-  );
 
-  const fetchConfig = async (tenantId: string | null) => {
+
+  const fetchConfig = async () => {
     setLoading(true);
     try {
-      const headers: Record<string, string> = {};
-      if (tenantId) {
-        headers["x-tenant-id"] = tenantId;
-      }
-
-      const response = await fetch(`${API_URL}/tenant/config`, { headers });
+      const response = await fetch(`${API_URL}/tenant/config`);
       if (!response.ok) {
         throw new Error("Failed to fetch tenant configuration");
       }
@@ -85,8 +78,6 @@ export const TenantProvider = ({ children }: { children: ReactNode }) => {
   const applyBranding = (branding: TenantConfig["branding"]) => {
     if (branding.themeColor) {
       document.documentElement.style.setProperty("--primary", branding.themeColor);
-      // Generate hover color (slightly darker) - simplistic approach
-      // For a better approach, we could use a library or predefined shades
       document.documentElement.style.setProperty("--primary-hover", branding.themeColor + "CC"); 
       document.documentElement.style.setProperty("--primary-light", branding.themeColor + "1A");
     }
@@ -106,27 +97,11 @@ export const TenantProvider = ({ children }: { children: ReactNode }) => {
   }, [config]);
 
   useEffect(() => {
-    // Check URL params for tenant override
-    const params = new URLSearchParams(window.location.search);
-    const tenantParam = params.get("tenant");
-    
-    if (tenantParam) {
-      localStorage.setItem("activeTenantId", tenantParam);
-      // Clean up URL and reload to apply
-      window.location.href = window.location.pathname;
-    } else {
-      fetchConfig(currentTenantId);
-    }
+    fetchConfig();
   }, []);
 
-  const setTenantId = (id: string) => {
-    localStorage.setItem("activeTenantId", id);
-    // Reload to ensure all components re-fetch based on new tenant from scratch
-    window.location.reload();
-  };
-
   return (
-    <TenantContext.Provider value={{ config, loading, error, setTenantId, currentTenantId }}>
+    <TenantContext.Provider value={{ config, loading, error, setTenantId: () => {}, currentTenantId: null }}>
       {children}
     </TenantContext.Provider>
   );

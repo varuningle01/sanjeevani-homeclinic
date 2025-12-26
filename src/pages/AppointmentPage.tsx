@@ -9,9 +9,11 @@ import {
   isTimeSlotDisabled, 
   formatIsoToHHMM 
 } from "../utils/helpers";
+import { useTenant } from "../context/TenantContext";
 
 export default function Appointment() {
   const { t } = useTranslation();
+  const { config } = useTenant();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -32,8 +34,12 @@ export default function Appointment() {
   useEffect(() => {
     if (formData.date) {
         const dateObj = new Date(formData.date);
-        if (dateObj.getDay() === 0) {
-            setError(t("Clinic is closed on Sundays"));
+        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const dayName = days[dateObj.getDay()];
+        const closedDay = config?.timings?.closedDay || "Sunday";
+
+        if (dayName === closedDay) {
+            setError(t(`Clinic is closed on ${closedDay}s`));
             setFormData({ ...formData, date: "" });
             return;
         } else {
@@ -113,7 +119,7 @@ export default function Appointment() {
 
       <div className="py-12 bg-[#F4FAFB] min-h-screen">
         <div className="max-w-lg mx-auto px-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-center text-[#0B7A75] mb-3">
+          <h1 className="text-3xl md:text-4xl font-bold text-center text-primary mb-3">
             {t("appointment.title")}
           </h1>
 
@@ -138,7 +144,7 @@ export default function Appointment() {
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
-                className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0B7A75] outline-none"
+                className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
               />
             </div>
 
@@ -151,7 +157,7 @@ export default function Appointment() {
                 required
                 value={formData.phone}
                 onChange={handlePhoneChange}
-                className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0B7A75] outline-none"
+                className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
               />
             </div>
 
@@ -167,7 +173,7 @@ export default function Appointment() {
                 onChange={(e) =>
                   setFormData({ ...formData, date: e.target.value })
                 }
-                className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0B7A75] outline-none"
+                className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
               />
             </div>
 
@@ -189,10 +195,10 @@ export default function Appointment() {
                                onClick={() => setSelectedTime(time)}
                                className={`py-2 px-1 text-sm rounded-md border text-center transition
                                  ${isSelected 
-                                    ? "bg-[#0B7A75] text-white border-[#0B7A75]" 
+                                    ? "bg-primary text-white border-primary" 
                                     : disabled 
                                         ? "bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200" 
-                                        : "bg-white text-gray-700 hover:border-[#0B7A75] hover:text-[#0B7A75]"
+                                        : "bg-white text-gray-700 hover:border-primary hover:text-primary"
                                  }
                                `}
                              >
@@ -215,7 +221,7 @@ export default function Appointment() {
                 onChange={(e) =>
                   setFormData({ ...formData, problem: e.target.value })
                 }
-                className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0B7A75] outline-none resize-none"
+                className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none resize-none"
               />
             </div>
 
@@ -223,7 +229,7 @@ export default function Appointment() {
               type="submit"
               disabled={loading}
               className={`w-full text-white py-3 rounded-lg text-lg font-semibold transition
-                ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-[#0B7A75] hover:bg-[#085f5a]"}`}
+                ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-primary hover:opacity-90"}`}
             >
               {loading ? "Booking..." : t("appointment.submit")}
             </button>
@@ -231,7 +237,7 @@ export default function Appointment() {
 
           {submitted && (
             <div className="mt-6">
-              <div className="bg-[#E6F7F7] border border-[#0B7A75]/30 text-[#0B7A75] rounded-xl p-4 text-center shadow-sm">
+              <div className="bg-primaryLight border border-primary/30 text-primary rounded-xl p-4 text-center shadow-sm">
                 <p className="font-semibold text-lg">
                   {t("appointment.successTitle")}
                 </p>

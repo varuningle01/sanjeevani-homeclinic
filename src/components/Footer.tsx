@@ -145,7 +145,7 @@ export default function Footer() {
         <div className="h-60 sm:h-72 md:h-80 overflow-hidden rounded-xl shadow-lg border border-gray-200">
           <iframe
             title="clinic-location"
-            src={config?.googleMapsUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d932.9502400788441!2d77.01100396956932!3d20.71830559880341!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd72f00463bc409%3A0x9c8c72c1594ed5b1!2sSanjeevani%20Homoeo%20Clinic!5e0!3m2!1sen!2sin!4v1766599742342!5m2!1sen!2sin"}
+            src={config?.googleMapsUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.5642857416954!2d77.22732107530495!3d28.61208947567491!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd5b347eb62d%3A0x37205b7187896440!2sIndia%20Gate!5e0!3m2!1sen!2sin!4v1703616000000!5m2!1sen!2sin"}
             className="w-full h-full"
             loading="lazy"
           ></iframe>

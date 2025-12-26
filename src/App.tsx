@@ -17,7 +17,6 @@ const AppointmentsPage = lazy(() => import("./admin/pages/AppointmentsPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 import { useTenant } from "./context/TenantContext";
-import TenantSwitcher from "./components/TenantSwitcher";
 
 export default function App() {
   const { loading } = useTenant();
@@ -33,7 +32,6 @@ export default function App() {
   return (
     <Suspense fallback={<div className="p-10 text-center">Loading…</div>}>
       <ScrollToTop />
-      <TenantSwitcher />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />

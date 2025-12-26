@@ -1,8 +1,8 @@
 {
   "welcome": "Welcome to",
-  "clinicName": "Sanjeevani Homeoclinic",
-  "doctorName": "Dr. Prashant Ingle",
-  "specialization": "Homeopathic Skin Specialist",
+  "clinicName": "Holistic Clinic",
+  "doctorName": "Our Specialist",
+  "specialization": "Medical Specialist",
   "nav": {
     "home": "Home",
     "about": "About Doctor",
@@ -11,36 +11,35 @@
     "contact": "Contact"
   },
   "hero": {
-    "tagline": "Expert Homeopathic Treatment for Skin Conditions",
-    "subtitle": "Specializing in Eczema & Psoriasis Treatment",
+    "tagline": "Expert Healthcare Treatment for All Patients",
+    "subtitle": "Specializing in Advanced Medical Care",
     "cta": "Book Appointment",
     "learnMore": "Learn More"
   },
   "services": {
     "title": "Our Specializations",
-    "eczema": "Eczema Treatment",
-    "psoriasis": "Psoriasis Treatment",
-    "skinAllergy": "Skin Allergies",
-    "acne": "Acne & Pimples"
+    "eczema": "Expert Consultation",
+    "psoriasis": "Specialized Treatment",
+    "skinAllergy": "Health Checkup",
+    "acne": "Medical Advice"
   },
   "about": {
-    "title": "About Dr. Prashant Ingle",
-    "subtitle": "Experienced Homeopathic Skin Specialist",
+    "title": "About Our Doctor",
+    "subtitle": "Experienced Medical Specialist",
     "experience": "Years of Experience",
     "patients": "Patients Treated",
     "qualification": "Qualifications"
   },
   "doctor": {
-    "name": "Dr. Prashant Ingle",
-    "qualification": "BHMS, Skin Specialist",
-    "experienceYears": "10",
-    "patientsTreated": "5000",
-    "about": "Dr. Prashant Ingle is an experienced Homeopathic Skin Specialist with a strong focus on treating chronic skin diseases such as Psoriasis, Vitiligo, Eczema, Acne and Allergies through safe and natural Homeopathic methods."
+    "name": "Medical Specialist",
+    "qualification": "Professional Qualifications",
+    "experienceYears": "1",
+    "patientsTreated": "500",
+    "about": "An experienced medical professional dedicated to providing the best healthcare services to our patients through advanced treatment methods."
   },
-
   "gallery": {
-    "title": "Treatment Results",
-    "subtitle": "Before & After Gallery",
+    "title": "Clinical Results",
+    "subtitle": "Before & After Showcase",
     "before": "Before",
     "after": "After"
   },
@@ -49,26 +48,26 @@
     "name": "Full Name",
     "phone": "Phone Number",
     "date": "Preferred Date",
-    "problem": "Describe Your Problem",
+    "problem": "Describe Your Concern",
     "submit": "Request Appointment",
     "successTitle": "Appointment Request Submitted!",
-    "successMessage": "Please ensure you reach the clinic on or before your appointment time.”"
+    "successMessage": "Please ensure you reach the clinic on or before your appointment time."
   },
   "contact": {
     "title": "Contact Us",
     "address": "Address",
-    "addressLine1": "Sanjivani Homeo Clinic, Vinayak Sankul opp Bhamburkar Hospital Tapadiya Nagar",
-    "addressLine2": "Akola, Maharashtra – 444005",
+    "addressLine1": "Main Street, City Center",
+    "addressLine2": "Region, Country",
     "phone": "Phone",
-    "phoneNumber": "9822566949",
+    "phoneNumber": "0000000000",
     "timings": "Clinic Timings",
     "morning": "Morning",
-    "morningTime": "10:00 AM – 1:00 PM",
+    "morningTime": "9:00 AM – 1:00 PM",
     "afternoon": "Afternoon",
-    "afternoonTime": "2:00 PM – 6:00 PM",
+    "afternoonTime": "2:00 PM – 5:00 PM",
     "evening": "Evening",
-    "eveningTime": "6:00 PM – 10:00 PM",
-    "closed": "Sunday Closed"
+    "eveningTime": "6:00 PM – 9:00 PM",
+    "closed": "Closed"
   },
   "footer": {
     "rights": "All Rights Reserved",
@@ -91,15 +90,7 @@
     "password": "Password",
     "invalid": "Invalid credentials"
   },
-  "services": {
-    "title": "Skin & Homeopathic Specialties",
-    "psoriasis": "Psoriasis",
-    "vitiligo": "Vitiligo / White Patches",
-    "eczema": "Eczema",
-    "acne": "Acne & Pimples",
-    "skinAllergy": "Skin Allergy",
-    "fungal": "Fungal Infection",
-    "hairfall": "Hair Fall & Dandruff",
-    "urticaria": "Urticaria / Hives"
+  "specialties": {
+    "title": "Our Healthcare Specialties"
   }
 }

@@ -2,24 +2,35 @@ import { useTranslation } from "react-i18next";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import GalleryCard from "../components/GalleryCard";
+import { useTenant } from "../context/TenantContext";
 
-const galleryItems = [
-  {
-    id: "G001",
-    title: "Vitiligo",
-    beforeImage: "./face-chin-before.jpg",
-    afterImage: "./face-chin-after.jpg",
-  },
-  {
-    id: "G002",
-    title: "Vitiligo",
-    beforeImage: "./face-eyelid-before.jpg",
-    afterImage: "./face-eyelid-after.jpg",
-  },
-];
+
 
 const GalleryPage = () => {
   const { t } = useTranslation();
+  const { config } = useTenant();
+
+  const galleryItems = config?.assets?.gallery?.length 
+    ? config.assets.gallery.map((item, index) => ({
+        id: `G-${index}`,
+        title: item.caption || t("gallery.title"),
+        beforeImage: item.url, // Note: For real dynamic, we might need before/after pairs in DB
+        afterImage: item.url,
+      }))
+    : [
+        {
+          id: "G001",
+          title: "Vitiligo",
+          beforeImage: "./face-chin-before.jpg",
+          afterImage: "./face-chin-after.jpg",
+        },
+        {
+          id: "G002",
+          title: "Vitiligo",
+          beforeImage: "./face-eyelid-before.jpg",
+          afterImage: "./face-eyelid-after.jpg",
+        },
+      ];
 
   return (
     <div className="bg-[#F4FAFB] min-h-screen">
@@ -28,7 +39,7 @@ const GalleryPage = () => {
       <div className="py-12">
         <div className="max-w-7xl mx-auto px-4">
           {/* Header */}
-          <h1 className="text-3xl md:text-4xl font-bold text-center text-[#0B7A75]">
+          <h1 className="text-3xl md:text-4xl font-bold text-center text-primary">
             {t("gallery.title")}
           </h1>
 
