@@ -55,12 +55,20 @@ export const TenantProvider = ({ children }: { children: ReactNode }) => {
   const [config, setConfig] = useState<TenantConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentTenantId, _setCurrentTenantId] = useState<string | null>(
+    localStorage.getItem("activeTenantId")
+  );
 
 
   const fetchConfig = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${API_URL}/tenant/config`);
+      const headers: Record<string, string> = {};
+      if (currentTenantId) {
+        headers["x-tenant-id"] = currentTenantId;
+      }
+
+      const response = await fetch(`${API_URL}/tenant/config`, { headers });
       if (!response.ok) {
         throw new Error("Failed to fetch tenant configuration");
       }
@@ -98,10 +106,15 @@ export const TenantProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     fetchConfig();
-  }, []);
+  }, [currentTenantId]);
+
+  const setTenantId = (id: string) => {
+    localStorage.setItem("activeTenantId", id);
+    window.location.reload();
+  };
 
   return (
-    <TenantContext.Provider value={{ config, loading, error, setTenantId: () => {}, currentTenantId: null }}>
+    <TenantContext.Provider value={{ config, loading, error, setTenantId, currentTenantId }}>
       {children}
     </TenantContext.Provider>
   );
