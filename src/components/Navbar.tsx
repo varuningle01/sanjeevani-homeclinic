@@ -12,6 +12,8 @@ import { useTenant } from "../context/TenantContext";
 function Navbar() {
   const { config } = useTenant();
   const { t, i18n } = useTranslation();
+  const enableLanguageSwitcher = import.meta.env.VITE_ENABLE_LANGUAGE_SWITCHER === 'true';
+  console.log(enableLanguageSwitcher);
   const isOnline = useSelector((state: RootState) => state.clinic.isOnline);
   const location = useLocation();
 
@@ -42,13 +44,11 @@ function Navbar() {
       <div className="w-full px-4 md:px-10 py-4 flex items-center justify-between">
         {/* Logo Section */}
         <Link className="flex items-center gap-3" to="/">
-          <div className="w-10 h-10 flex items-center justify-center">
-            {config?.branding?.logoUrl ? (
-              <img src={config.branding.logoUrl} alt="Logo" className="h-full w-full object-contain" />
-            ) : (
-              <ClinicLogo />
-            )}
-          </div>
+          {config?.branding?.logoUrl && (
+            <div className="w-10 h-10 flex items-center justify-center">
+              <ClinicLogo className="h-full w-full object-contain" />
+            </div>
+          )}
 
           <div>
             <h1 className="text-lg font-bold leading-tight text-gray-900">
@@ -84,7 +84,8 @@ function Navbar() {
         </nav>
 
         {/* Language Switcher */}
-        <select
+       {
+        enableLanguageSwitcher &&  <select
           value={i18n.language}
           onChange={(e) => i18n.changeLanguage(e.target.value)}
           className="hidden md:block bg-white border border-gray-300 text-gray-700 text-sm rounded-md px-3 py-1.5 shadow-sm 
@@ -94,6 +95,7 @@ function Navbar() {
           <option value="hi">हिंदी</option>
           <option value="mr">मराठी</option>
         </select>
+       }
 
         {/* Mobile Menu Button */}
         <motion.button
@@ -133,7 +135,8 @@ function Navbar() {
               ))}
 
               {/* Mobile Language Selector */}
-              <select
+             {
+              enableLanguageSwitcher &&  <select
                 value={i18n.language}
                 onChange={(e) => i18n.changeLanguage(e.target.value)}
                 className="bg-gray-100 border border-gray-300 text-gray-700 text-base rounded-md px-3 py-2 shadow-sm 
@@ -143,6 +146,7 @@ function Navbar() {
                 <option value="hi">हिंदी</option>
                 <option value="mr">मराठी</option>
               </select>
+             }
             </nav>
           </motion.div>
         )}
