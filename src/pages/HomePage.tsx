@@ -64,15 +64,15 @@ function HomePage() {
             </p>
 
             <h1 className="text-3xl md:text-5xl font-extrabold leading-tight text-gray-900 mb-4">
-              {config?.clinicName || "My Clinic"}
+              {config?.clinicName || fallbackValues.clinicName}
             </h1>
 
             <h2 className="text-xl text-primary font-semibold mb-2">
-              {config?.doctorName || "Dr. John Doe"}
+              {config?.doctorName || fallbackValues.doctorName}
             </h2>
 
             <p className="text-gray-700 mb-4">
-              {config?.specialization || "General Medicine Specialist"}
+              {config?.specialization || fallbackValues.specialization}
             </p>
 
             <p className="text-gray-900 text-lg font-medium mb-8">
@@ -101,10 +101,7 @@ function HomePage() {
           <div className="flex justify-center">
             <div className="w-64 h-80 md:w-80 md:h-96 bg-white border border-primaryLight rounded-3xl overflow-hidden shadow-xl">
               <img
-                src={
-                  config?.assets?.doctorImage ||
-                  "https://placehold.co/800?text=Doctor+Image&font=roboto"
-                }
+                src={config?.assets?.doctorImage || fallbackValues.doctorImage}
                 alt="Doctor Image"
                 className="w-full h-full object-cover"
               />
@@ -128,10 +125,7 @@ function HomePage() {
                   className="bg-white rounded-2xl border border-primaryLight shadow-sm hover:shadow-lg transition-all"
                 >
                   <img
-                    src={
-                      item.image ||
-                      "https://placehold.co/800?text=Services+Images&font=roboto"
-                    }
+                    src={item.image || fallbackValues.serviceImage}
                     alt={item.title}
                     className="w-full h-40 sm:h-48 object-cover rounded-t-2xl"
                   />

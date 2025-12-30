@@ -6,6 +6,7 @@
   "patientsTreated": "1000",
   "specialization": "General Medicine Specialist",
   "doctorImage": "https:placehold.co/800?text=Doctor+Image&font=roboto",
+  "serviceImage": "https:placehold.co/800?text=Service+Image&font=roboto",
   "aboutDoctor": "Experienced Medical Specialist",
   "addressLine1": "Main Street, City Center",
   "addressLine2": "Region, Country",
