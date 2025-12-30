@@ -85,6 +85,7 @@
     "username": "Username",
     "password": "Password",
     "invalid": "Invalid credentials",
+    "backToHome": "← Back to Home",
     "common": {
       "menu": "Menu",
       "loading": "Loading...",

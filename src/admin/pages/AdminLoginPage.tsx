@@ -3,10 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/slices/authSlice";
 import { useNavigate, Link } from "react-router-dom";
 import type { RootState } from "../../store/store";
-import ClinicLogo from "../../components/ClinicLogo"; // <-- NEW LOGO
+import ClinicLogo from "../../components/ClinicLogo";
 import labels from "../../locales/en-us.json";
+import fallbackValues from "../../locales/fallback-values.json";
+import { useTenant } from "../../context/TenantContext";
 
 const AdminLoginPage = () => {
+  const { config, currentTenantId } = useTenant();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -27,8 +30,15 @@ const AdminLoginPage = () => {
     e.preventDefault();
     setError("");
 
+    if (!currentTenantId) {
+      setError("Tenant ID is missing. Please try reloading.");
+      return;
+    }
+
     try {
-      await dispatch(login({ username, password }) as any).unwrap();
+      await dispatch(
+        login({ username, password, tenantId: currentTenantId }) as any
+      ).unwrap();
       navigate("/admin/dashboard");
     } catch (err) {
       setError("Invalid username or password");
@@ -44,7 +54,7 @@ const AdminLoginPage = () => {
             to="/"
             className="inline-block text-teal-700 border border-teal-600 px-4 py-2 rounded-xl text-sm font-medium hover:bg-teal-50 transition shadow-sm"
           >
-            ← Back to Home
+            {labels.admin.backToHome}
           </Link>
         </div>
 
@@ -55,7 +65,7 @@ const AdminLoginPage = () => {
           </div>
 
           <h1 className="text-2xl font-bold mt-4 text-gray-900">
-            {labels.clinicName}
+            {config?.clinicName || fallbackValues.clinicName}
           </h1>
           <p className="text-gray-500">{labels.admin.login}</p>
         </div>
@@ -115,14 +125,6 @@ const AdminLoginPage = () => {
             </button>
           </div>
         </form>
-
-        {/* Demo Credentials */}
-        <p className="text-center text-gray-500 text-sm mt-4 select-all">
-          Demo Login —{" "}
-          <span className="text-teal-600 font-medium">
-            admin / sanjeevani123
-          </span>
-        </p>
       </div>
     </div>
   );

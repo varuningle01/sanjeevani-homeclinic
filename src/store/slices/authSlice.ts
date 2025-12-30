@@ -23,12 +23,12 @@ const initialState: AuthState = savedAuth
 
 export const login = createAsyncThunk(
   "auth/login",
-  async ({ username, password }: any, { rejectWithValue }) => {
+  async ({ username, password, tenantId }: any, { rejectWithValue }) => {
     try {
       const response = await fetch(`${API_URL}/admin/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, tenantId }),
       });
 
       if (!response.ok) {

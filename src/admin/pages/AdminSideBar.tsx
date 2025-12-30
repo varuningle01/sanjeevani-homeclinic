@@ -5,6 +5,8 @@ import { logout } from "../../store/slices/authSlice";
 import { FiHome, FiUsers, FiCalendar, FiLogOut } from "react-icons/fi";
 import ClinicLogo from "../../components/ClinicLogo"; // ← IMPORT LOGO
 import labels from "../../locales/en-us.json";
+import fallbackValues from "../../locales/fallback-values.json";
+import { useTenant } from "../../context/TenantContext";
 
 interface SidebarProps {
   open: boolean;
@@ -12,6 +14,7 @@ interface SidebarProps {
 }
 
 const AdminSideBar = ({ open, setOpen }: SidebarProps) => {
+  const { config } = useTenant();
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,12 +33,12 @@ const AdminSideBar = ({ open, setOpen }: SidebarProps) => {
     },
     {
       path: "/admin/patients",
-      label: labels.admin.patients,
+      label: labels.admin.patients.title,
       icon: <FiUsers />,
     },
     {
       path: "/admin/appointments",
-      label: labels.admin.appointments,
+      label: labels.admin.appointments.title,
       icon: <FiCalendar />,
     },
   ];
@@ -55,7 +58,9 @@ const AdminSideBar = ({ open, setOpen }: SidebarProps) => {
         <div className="w-10 h-10 flex items-center justify-center">
           <ClinicLogo className="w-10 h-10" /> {/* NEW LOGO */}
         </div>
-        <span className="font-semibold text-gray-700">{labels.clinicName}</span>
+        <span className="font-semibold text-gray-700">
+          {config?.clinicName || fallbackValues.clinicName}
+        </span>
       </div>
 
       {/* Navigation */}
