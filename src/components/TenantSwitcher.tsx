@@ -1,6 +1,8 @@
 import { useTenant } from "../context/TenantContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiSettings, FiX } from "react-icons/fi";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 const TenantSwitcher = () => {
   const { setTenantId, currentTenantId } = useTenant();
@@ -11,10 +13,16 @@ const TenantSwitcher = () => {
   
   if (!isEnabled) return null;
 
-  const tenants = [
-    { id: "sanjeevani", name: "Sanjeevani Clinic", color: "#0B7A75" },
-    { id: "test-clinic", name: "Test Clinic", color: "#4f46e5" },
-  ];
+  const [tenants, setTenants] = useState<{id: string, name: string, color: string}[]>([]);
+
+  useEffect(() => {
+    if (isOpen) {
+      fetch(`${API_URL}/tenant/list`)
+        .then(res => res.json())
+        .then(data => setTenants(data))
+        .catch(err => console.error("Failed to fetch tenants", err));
+    }
+  }, [isOpen]);
 
   return (
     <div className="fixed bottom-5 right-5 z-[9999]">
