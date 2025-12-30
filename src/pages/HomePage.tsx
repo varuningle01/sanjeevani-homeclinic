@@ -74,14 +74,14 @@ function HomePage() {
             </p>
 
             <h1 className="text-3xl md:text-5xl font-extrabold leading-tight text-gray-900 mb-4">
-              {config?.clinicName || t("clinicName")}
+              {config?.clinicName || "My Homeo Clinic"}
             </h1>
 
             <h2 className="text-xl text-primary font-semibold mb-2">
-              {config?.doctorName || t("doctorName")}
+              {config?.doctorName || "Dr. Homeo"}
             </h2>
 
-            <p className="text-gray-700 mb-4">{config?.specialization || t("specialization")}</p>
+            <p className="text-gray-700 mb-4">{config?.specialization || "Homeopathic Specialist"}</p>
 
             <p className="text-gray-900 text-lg font-medium mb-8">
               {t("hero.tagline")}
@@ -110,8 +110,11 @@ function HomePage() {
             <div className="w-64 h-80 md:w-80 md:h-96 bg-white border border-primaryLight rounded-3xl overflow-hidden shadow-xl">
               <img
                 src={doctorImage}
-                alt={config?.doctorName || t("doctorName")}
+                alt={config?.doctorName}
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                    (e.target as HTMLImageElement).src = "https://via.placeholder.com/400x500?text=Doctor+Image"; // Fallback
+                }}
               />
             </div>
           </div>
@@ -119,6 +122,7 @@ function HomePage() {
       </section>
 
       {/* ================= SERVICES ================= */}
+      {services.length > 0 && (
       <section className="py-16 bg-white">
         <div className="max-w-[1300px] mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-12">
@@ -132,9 +136,12 @@ function HomePage() {
                 className="bg-white rounded-2xl border border-primaryLight shadow-sm hover:shadow-lg transition-all"
               >
                 <img
-                  src={item.image}
+                  src={item.image || "https://via.placeholder.com/300x200?text=Service"} 
                   alt={item.title}
                   className="w-full h-40 sm:h-48 object-cover rounded-t-2xl"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "https://via.placeholder.com/300x200?text=No+Image"; 
+                }}
                 />
                 <p className="p-4 font-semibold text-gray-900">
                   {item.title}
@@ -144,6 +151,7 @@ function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* ================= CTA STRIP ================= */}
       <section className="py-16 bg-gradient-to-r from-primary to-primaryHover text-white">

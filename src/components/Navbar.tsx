@@ -43,7 +43,11 @@ function Navbar() {
         {/* Logo Section */}
         <Link className="flex items-center gap-3" to="/">
           <div className="w-10 h-10 flex items-center justify-center">
-            <ClinicLogo />
+            {config?.branding?.logoUrl ? (
+              <img src={config.branding.logoUrl} alt="Logo" className="h-full w-full object-contain" />
+            ) : (
+              <ClinicLogo />
+            )}
           </div>
 
           <div>
