@@ -2,14 +2,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import { useDispatch } from "react-redux";
 import { logout } from "../../store/slices/authSlice";
-import { useTranslation } from "react-i18next";
-import {
-  FiHome,
-  FiUsers,
-  FiCalendar,
-  FiLogOut,
-} from "react-icons/fi";
+import { FiHome, FiUsers, FiCalendar, FiLogOut } from "react-icons/fi";
 import ClinicLogo from "../../components/ClinicLogo"; // ← IMPORT LOGO
+import labels from "../../locales/en-us.json";
 
 interface SidebarProps {
   open: boolean;
@@ -17,7 +12,6 @@ interface SidebarProps {
 }
 
 const AdminSideBar = ({ open, setOpen }: SidebarProps) => {
-  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -29,11 +23,19 @@ const AdminSideBar = ({ open, setOpen }: SidebarProps) => {
   };
 
   const navItems = [
-    { path: "/admin/dashboard", label: "Dashboard", icon: <FiHome /> },
-    { path: "/admin/patients", label: "Patients", icon: <FiUsers /> },
+    {
+      path: "/admin/dashboard",
+      label: labels.admin.dashboard,
+      icon: <FiHome />,
+    },
+    {
+      path: "/admin/patients",
+      label: labels.admin.patients,
+      icon: <FiUsers />,
+    },
     {
       path: "/admin/appointments",
-      label: "Appointments",
+      label: labels.admin.appointments,
       icon: <FiCalendar />,
     },
   ];
@@ -53,7 +55,7 @@ const AdminSideBar = ({ open, setOpen }: SidebarProps) => {
         <div className="w-10 h-10 flex items-center justify-center">
           <ClinicLogo className="w-10 h-10" /> {/* NEW LOGO */}
         </div>
-        <span className="font-semibold text-gray-700">{t("clinicName")}</span>
+        <span className="font-semibold text-gray-700">{labels.clinicName}</span>
       </div>
 
       {/* Navigation */}
@@ -92,15 +94,19 @@ const AdminSideBar = ({ open, setOpen }: SidebarProps) => {
 
       {/* Availability Toggle */}
       <div className="p-4 border-t border-gray-200">
-        <p className="text-xs text-gray-500 mb-2">{t("admin.availability")}</p>
+        <p className="text-xs text-gray-500 mb-2">
+          {labels.admin.availability}
+        </p>
 
         <div className="flex items-center justify-between">
-          <span className={`text-sm font-medium transition-colors ${
-            isOnline ? "text-teal-700" : "text-gray-500"
-          }`}>
-            {isOnline ? t("status.online") : t("status.offline")}
+          <span
+            className={`text-sm font-medium transition-colors ${
+              isOnline ? "text-teal-700" : "text-gray-500"
+            }`}
+          >
+            {isOnline ? labels.status.online : labels.status.offline}
           </span>
-          
+
           <button
             onClick={() => setIsOnline(!isOnline)}
             className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 ${
@@ -129,7 +135,7 @@ const AdminSideBar = ({ open, setOpen }: SidebarProps) => {
           text-gray-600 hover:bg-gray-100 hover:text-red-600 transition-all"
         >
           <FiLogOut className="text-lg" />
-          <span className="font-medium">{t("admin.logout")}</span>
+          <span className="font-medium">{labels.admin.logout}</span>
         </button>
       </div>
     </aside>

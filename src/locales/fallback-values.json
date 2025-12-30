@@ -1,0 +1,18 @@
+{
+  "clinicName": "My Clinic",
+  "doctorName": "Dr. John Doe",
+  "doctorQualification": "MBBS, MD",
+  "experienceYears": "10",
+  "patientsTreated": "1000",
+  "specialization": "General Medicine Specialist",
+  "doctorImage": "https:placehold.co/800?text=Doctor+Image&font=roboto",
+  "aboutDoctor": "Experienced Medical Specialist",
+  "addressLine1": "Main Street, City Center",
+  "addressLine2": "Region, Country",
+  "phoneNumber": "0000000000",
+  "morningTime": "09:00 AM - 01:00 PM",
+  "afternoonTime": "02:00 PM - 05:00 PM",
+  "eveningTime": "06:00 PM - 09:00 PM",
+  "closedDay": "Sunday Closed",
+  "googleMapsUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.5642857416954!2d77.22732107530495!3d28.61208947567491!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd5b347eb62d%3A0x37205b7187896440!2sIndia%20Gate!5e0!3m2!1sen!2sin!4v1703616000000!5m2!1sen!2sin"
+}

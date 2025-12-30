@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from "react";
 
 export interface TenantConfig {
   tenantId: string;
@@ -23,7 +29,8 @@ export interface TenantConfig {
     heroImage?: string;
     doctorImage?: string;
     gallery?: Array<{
-      url: string;
+      before?: string;
+      after?: string;
       caption?: string;
     }>;
   };
@@ -59,8 +66,14 @@ export const TenantProvider = ({ children }: { children: ReactNode }) => {
     localStorage.getItem("activeTenantId")
   );
 
-
   const fetchConfig = async () => {
+    if (!currentTenantId) {
+      setConfig(null);
+      setLoading(false);
+      removeBranding(); // Ensure branding is reset
+      return;
+    }
+
     setLoading(true);
     try {
       const headers: Record<string, string> = {};
@@ -85,22 +98,44 @@ export const TenantProvider = ({ children }: { children: ReactNode }) => {
 
   const applyBranding = (branding: TenantConfig["branding"]) => {
     if (branding.themeColor) {
-      document.documentElement.style.setProperty("--primary", branding.themeColor);
-      document.documentElement.style.setProperty("--primary-hover", branding.themeColor + "CC"); 
-      document.documentElement.style.setProperty("--primary-light", branding.themeColor + "1A");
+      document.documentElement.style.setProperty(
+        "--primary",
+        branding.themeColor
+      );
+      document.documentElement.style.setProperty(
+        "--primary-hover",
+        branding.themeColor + "CC"
+      );
+      document.documentElement.style.setProperty(
+        "--primary-light",
+        branding.themeColor + "1A"
+      );
     }
-    
+
     if (branding.faviconUrl) {
-      const link: HTMLLinkElement | null = document.querySelector("link[rel~='icon']");
+      const link: HTMLLinkElement | null =
+        document.querySelector("link[rel~='icon']");
       if (link) {
         link.href = branding.faviconUrl;
       }
     }
   };
 
+  const removeBranding = () => {
+    document.documentElement.style.removeProperty("--primary");
+    document.documentElement.style.removeProperty("--primary-hover");
+    document.documentElement.style.removeProperty("--primary-light");
+
+    const link: HTMLLinkElement | null =
+      document.querySelector("link[rel~='icon']");
+    if (link) {
+      link.href = "/favicon.ico"; // Reset to default favicon
+    }
+  };
+
   useEffect(() => {
     if (config?.clinicName) {
-        document.title = config.clinicName;
+      document.title = config.clinicName;
     }
   }, [config]);
 
@@ -114,7 +149,9 @@ export const TenantProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <TenantContext.Provider value={{ config, loading, error, setTenantId, currentTenantId }}>
+    <TenantContext.Provider
+      value={{ config, loading, error, setTenantId, currentTenantId }}
+    >
       {children}
     </TenantContext.Provider>
   );

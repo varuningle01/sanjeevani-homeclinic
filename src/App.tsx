@@ -15,12 +15,17 @@ const AppointmentPage = lazy(() => import("./pages/AppointmentPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const AdminLoginPage = lazy(() => import("./admin/pages/AdminLoginPage"));
 const PatientsPage = lazy(() => import("./admin/pages/PatientsPage"));
-const PatientDetailsPage = lazy(() => import("./admin/pages/PatientDetailsPage"));
+const PatientDetailsPage = lazy(
+  () => import("./admin/pages/PatientDetailsPage")
+);
 const AppointmentsPage = lazy(() => import("./admin/pages/AppointmentsPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
-const SuperAdminLoginPage = lazy(() => import("./superadmin/pages/SuperAdminLoginPage"));
-const SuperAdminDashboard = lazy(() => import("./superadmin/pages/SuperAdminDashboard"));
-
+const SuperAdminLoginPage = lazy(
+  () => import("./superadmin/pages/SuperAdminLoginPage")
+);
+const SuperAdminDashboard = lazy(
+  () => import("./superadmin/pages/SuperAdminDashboard")
+);
 
 import { useTenant } from "./context/TenantContext";
 import TenantSwitcher from "./components/TenantSwitcher";
@@ -48,7 +53,7 @@ export default function App() {
           <Route path="/appointment" element={<AppointmentPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/admin/login" element={<AdminLoginPage />} />
-          
+
           {/* Tenant Admin Routes */}
           <Route
             path="/admin/dashboard"
@@ -95,7 +100,10 @@ export default function App() {
           <Route path="/superadmin/login" element={<SuperAdminLoginPage />} />
           <Route element={<SuperAdminProtectedRoute />}>
             <Route element={<SuperAdminLayout />}>
-              <Route path="/superadmin/dashboard" element={<SuperAdminDashboard />} />
+              <Route
+                path="/superadmin/dashboard"
+                element={<SuperAdminDashboard />}
+              />
             </Route>
           </Route>
 

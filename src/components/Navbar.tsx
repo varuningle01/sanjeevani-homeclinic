@@ -1,30 +1,28 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
 import type { RootState } from "../store/store";
 import ClinicLogo from "./ClinicLogo";
+import fallbackValues from "../locales/fallback-values.json";
+import labels from "../locales/en-us.json";
 
 import { useTenant } from "../context/TenantContext";
 
 function Navbar() {
   const { config } = useTenant();
-  const { t, i18n } = useTranslation();
-  const enableLanguageSwitcher = import.meta.env.VITE_ENABLE_LANGUAGE_SWITCHER === 'true';
-  console.log(enableLanguageSwitcher);
   const isOnline = useSelector((state: RootState) => state.clinic.isOnline);
   const location = useLocation();
 
   const [open, setOpen] = useState(false);
 
   const navItems = [
-    { path: "/", label: t("nav.home") },
-    { path: "/about", label: t("nav.about") },
-    { path: "/gallery", label: t("nav.gallery") },
-    { path: "/appointment", label: t("nav.appointment") },
-    { path: "/contact", label: t("nav.contact") },
+    { path: "/", label: labels.nav.home },
+    { path: "/about", label: labels.nav.about },
+    { path: "/gallery", label: labels.nav.gallery },
+    { path: "/appointment", label: labels.nav.appointment },
+    { path: "/contact", label: labels.nav.contact },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -37,7 +35,7 @@ function Navbar() {
           isOnline ? "bg-[#1c9c7c]" : "bg-red-500"
         }`}
       >
-        {isOnline ? t("status.online") : t("status.offline")}
+        {isOnline ? labels.status.online : labels.status.offline}
       </div>
 
       {/* MAIN NAV */}
@@ -52,9 +50,11 @@ function Navbar() {
 
           <div>
             <h1 className="text-lg font-bold leading-tight text-gray-900">
-              {config?.clinicName || t("clinicName")}
+              {config?.clinicName || fallbackValues.clinicName}
             </h1>
-            <p className="text-sm text-gray-500 -mt-0.5">{config?.doctorName || t("doctorName")}</p>
+            <p className="text-sm text-gray-500 -mt-0.5">
+              {config?.doctorName || fallbackValues.doctorName}
+            </p>
           </div>
         </Link>
 
@@ -82,20 +82,6 @@ function Navbar() {
             </Link>
           ))}
         </nav>
-
-        {/* Language Switcher */}
-       {
-        enableLanguageSwitcher &&  <select
-          value={i18n.language}
-          onChange={(e) => i18n.changeLanguage(e.target.value)}
-          className="hidden md:block bg-white border border-gray-300 text-gray-700 text-sm rounded-md px-3 py-1.5 shadow-sm 
-            focus:outline-none focus:ring-2 focus:ring-primary/40 transition"
-        >
-          <option value="en">English</option>
-          <option value="hi">हिंदी</option>
-          <option value="mr">मराठी</option>
-        </select>
-       }
 
         {/* Mobile Menu Button */}
         <motion.button
@@ -133,20 +119,6 @@ function Navbar() {
                   {item.label}
                 </Link>
               ))}
-
-              {/* Mobile Language Selector */}
-             {
-              enableLanguageSwitcher &&  <select
-                value={i18n.language}
-                onChange={(e) => i18n.changeLanguage(e.target.value)}
-                className="bg-gray-100 border border-gray-300 text-gray-700 text-base rounded-md px-3 py-2 shadow-sm 
-                  focus:outline-none focus:ring-2 focus:ring-primary/40 transition"
-              >
-                <option value="en">English</option>
-                <option value="hi">हिंदी</option>
-                <option value="mr">मराठी</option>
-              </select>
-             }
             </nav>
           </motion.div>
         )}

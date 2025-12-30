@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { useTranslation } from "react-i18next";
-import { bookAppointment, fetchBookedSlots } from "../services/appointmentService";
-import { 
-  generateTimeSlots, 
-  isValidPhone, 
-  isTimeSlotDisabled, 
-  formatIsoToHHMM 
+import {
+  bookAppointment,
+  fetchBookedSlots,
+} from "../services/appointmentService";
+import {
+  generateTimeSlots,
+  isValidPhone,
+  isTimeSlotDisabled,
+  formatIsoToHHMM,
 } from "../utils/helpers";
 import { useTenant } from "../context/TenantContext";
+import labels from "../locales/en-us.json";
 
 export default function Appointment() {
-  const { t } = useTranslation();
   const { config } = useTenant();
 
   const [formData, setFormData] = useState({
@@ -21,7 +23,7 @@ export default function Appointment() {
     date: "",
     problem: "",
   });
-  
+
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [bookedSlots, setBookedSlots] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
@@ -33,26 +35,34 @@ export default function Appointment() {
 
   useEffect(() => {
     if (formData.date) {
-        const dateObj = new Date(formData.date);
-        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        const dayName = days[dateObj.getDay()];
-        const closedDay = config?.timings?.closedDay || "Sunday";
+      const dateObj = new Date(formData.date);
+      const days = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
+      const dayName = days[dateObj.getDay()];
+      const closedDay = config?.timings?.closedDay || "Sunday";
 
-        if (dayName === closedDay) {
-            setError(t(`Clinic is closed on ${closedDay}s`));
-            setFormData({ ...formData, date: "" });
-            return;
-        } else {
-            setError(null);
-        }
+      if (dayName === closedDay) {
+        setError(`Clinic is closed on ${closedDay}s`);
+        setFormData({ ...formData, date: "" });
+        return;
+      } else {
+        setError(null);
+      }
 
       fetchBookedSlots(formData.date)
         .then((data: string[]) => {
-           // Use helper to format
-           const times = data.map(formatIsoToHHMM);
-           setBookedSlots(times);
+          // Use helper to format
+          const times = data.map(formatIsoToHHMM);
+          setBookedSlots(times);
         })
-        .catch(err => console.error(err));
+        .catch((err) => console.error(err));
       setSelectedTime(null); // Reset selection on date change
     }
   }, [formData.date]);
@@ -70,22 +80,22 @@ export default function Appointment() {
     const value = e.target.value;
     // Only allow digits
     if (/^\d*$/.test(value)) {
-        // Limit to 10 digits
-        if (value.length <= 10) {
-            setFormData({ ...formData, phone: value });
-        }
+      // Limit to 10 digits
+      if (value.length <= 10) {
+        setFormData({ ...formData, phone: value });
+      }
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedTime) {
-        setError("Please select a time slot");
-        return;
+      setError("Please select a time slot");
+      return;
     }
     if (!isValidPhone(formData.phone)) {
-        setError("Please enter a valid 10-digit mobile number");
-        return;
+      setError("Please enter a valid 10-digit mobile number");
+      return;
     }
 
     setError(null);
@@ -93,7 +103,7 @@ export default function Appointment() {
 
     try {
       const appointmentTime = new Date(`${formData.date}T${selectedTime}`);
-      
+
       await bookAppointment({
         name: formData.name,
         phone: formData.phone,
@@ -120,7 +130,7 @@ export default function Appointment() {
       <div className="py-12 bg-[#F4FAFB] min-h-screen">
         <div className="max-w-lg mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-bold text-center text-primary mb-3">
-            {t("appointment.title")}
+            {labels.appointment.title}
           </h1>
 
           <form
@@ -135,7 +145,7 @@ export default function Appointment() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t("appointment.name")}
+                {labels.appointment.name}
               </label>
               <input
                 type="text"
@@ -150,7 +160,7 @@ export default function Appointment() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t("appointment.phone")}
+                {labels.appointment.phone}
               </label>
               <input
                 type="tel"
@@ -163,7 +173,7 @@ export default function Appointment() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t("appointment.date")}
+                {labels.appointment.date}
               </label>
               <input
                 type="date"
@@ -179,40 +189,45 @@ export default function Appointment() {
 
             {/* Slot Grid */}
             {formData.date && (
-                <div>
-                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                     Select Time Slot (15 mins)
-                   </label>
-                   <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                     {allSlots.map((time) => {
-                         const disabled = isTimeSlotDisabled(time, bookedSlots, formData.date);
-                         const isSelected = selectedTime === time;
-                         return (
-                             <button
-                               key={time}
-                               type="button"
-                               disabled={disabled}
-                               onClick={() => setSelectedTime(time)}
-                               className={`py-2 px-1 text-sm rounded-md border text-center transition
-                                 ${isSelected 
-                                    ? "bg-primary text-white border-primary" 
-                                    : disabled 
-                                        ? "bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200" 
-                                        : "bg-white text-gray-700 hover:border-primary hover:text-primary"
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Select Time Slot (15 mins)
+                </label>
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                  {allSlots.map((time) => {
+                    const disabled = isTimeSlotDisabled(
+                      time,
+                      bookedSlots,
+                      formData.date
+                    );
+                    const isSelected = selectedTime === time;
+                    return (
+                      <button
+                        key={time}
+                        type="button"
+                        disabled={disabled}
+                        onClick={() => setSelectedTime(time)}
+                        className={`py-2 px-1 text-sm rounded-md border text-center transition
+                                 ${
+                                   isSelected
+                                     ? "bg-primary text-white border-primary"
+                                     : disabled
+                                     ? "bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200"
+                                     : "bg-white text-gray-700 hover:border-primary hover:text-primary"
                                  }
                                `}
-                             >
-                               {time}
-                             </button>
-                         );
-                     })}
-                   </div>
+                      >
+                        {time}
+                      </button>
+                    );
+                  })}
                 </div>
+              </div>
             )}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t("appointment.problem")}
+                {labels.appointment.problem}
               </label>
               <textarea
                 required
@@ -229,9 +244,13 @@ export default function Appointment() {
               type="submit"
               disabled={loading}
               className={`w-full text-white py-3 rounded-lg text-lg font-semibold transition
-                ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-primary hover:opacity-90"}`}
+                ${
+                  loading
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-primary hover:opacity-90"
+                }`}
             >
-              {loading ? "Booking..." : t("appointment.submit")}
+              {loading ? "Booking..." : labels.appointment.submit}
             </button>
           </form>
 
@@ -239,10 +258,10 @@ export default function Appointment() {
             <div className="mt-6">
               <div className="bg-primaryLight border border-primary/30 text-primary rounded-xl p-4 text-center shadow-sm">
                 <p className="font-semibold text-lg">
-                  {t("appointment.successTitle")}
+                  {labels.appointment.successTitle}
                 </p>
                 <p className="text-sm mt-1">
-                  {t("appointment.successMessage")}
+                  {labels.appointment.successMessage}
                 </p>
               </div>
             </div>

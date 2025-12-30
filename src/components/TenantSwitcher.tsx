@@ -36,6 +36,24 @@ const TenantSwitcher = () => {
           </div>
           
           <div className="space-y-2">
+            <button
+                onClick={() => {
+                  setTenantId("");
+                  setIsOpen(false);
+                }}
+                className={`w-full flex items-center gap-3 p-3 rounded-xl transition border-2 ${
+                  !currentTenantId 
+                    ? "border-red-500 bg-red-50" 
+                    : "border-transparent bg-gray-50 hover:bg-gray-100"
+                }`}
+              >
+                <div 
+                  className="w-4 h-4 rounded-full shadow-sm border border-gray-300 bg-white" 
+                />
+                <span className={`text-sm font-medium ${!currentTenantId ? 'text-red-700' : 'text-gray-700'}`}>
+                  No Tenant (Test)
+                </span>
+              </button>
             {tenants.map((t) => (
               <button
                 key={t.id}

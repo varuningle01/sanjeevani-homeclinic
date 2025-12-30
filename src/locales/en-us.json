@@ -1,0 +1,97 @@
+{
+  "welcome": "Welcome to",
+  "clinicName": "Holistic Clinic",
+  "doctorName": "Our Specialist",
+  "specialization": "Medical Specialist",
+  "nav": {
+    "home": "Home",
+    "about": "About Doctor",
+    "gallery": "Gallery",
+    "appointment": "Book Appointment",
+    "contact": "Contact"
+  },
+  "hero": {
+    "tagline": "Expert Healthcare Treatment for All Patients",
+    "subtitle": "Specializing in Advanced Medical Care",
+    "cta": "Book Appointment",
+    "learnMore": "Learn More"
+  },
+  "services": {
+    "title": "Our Specializations",
+    "eczema": "Expert Consultation",
+    "psoriasis": "Specialized Treatment",
+    "skinAllergy": "Health Checkup",
+    "acne": "Medical Advice"
+  },
+  "about": {
+    "title": "About Our Doctor",
+    "subtitle": "Experienced Medical Specialist",
+    "experience": "Years of Experience",
+    "patients": "Patients Treated",
+    "qualification": "Qualifications"
+  },
+  "doctor": {
+    "name": "Medical Specialist",
+    "qualification": "Professional Qualifications",
+    "experienceYears": "1",
+    "patientsTreated": "500",
+    "about": "An experienced medical professional dedicated to providing the best healthcare services to our patients through advanced treatment methods."
+  },
+  "gallery": {
+    "title": "Clinical Results",
+    "subtitle": "Before & After Showcase",
+    "before": "Before",
+    "after": "After"
+  },
+  "appointment": {
+    "title": "Book an Appointment",
+    "name": "Full Name",
+    "phone": "Phone Number",
+    "date": "Preferred Date",
+    "problem": "Describe Your Concern",
+    "submit": "Request Appointment",
+    "successTitle": "Appointment Request Submitted!",
+    "successMessage": "Please ensure you reach the clinic on or before your appointment time."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "address": "Address",
+    "phone": "Phone",
+    "phoneNumber": "0000000000",
+    "timings": "Clinic Timings",
+    "morning": "Morning",
+    "morningTime": "9:00 AM – 1:00 PM",
+    "afternoon": "Afternoon",
+    "afternoonTime": "2:00 PM – 5:00 PM",
+    "evening": "Evening",
+    "eveningTime": "6:00 PM – 9:00 PM",
+    "closed": "Closed"
+  },
+  "footer": {
+    "rights": "All Rights Reserved",
+    "quickLinks": "Quick Links",
+    "followUs": "Follow Us"
+  },
+  "status": {
+    "online": "Clinic Open",
+    "offline": "Clinic Closed"
+  },
+  "admin": {
+    "login": "Admin Login",
+    "dashboard": "Dashboard",
+    "patients": "Patients",
+    "appointments": "Appointments",
+    "logout": "Logout",
+    "search": "Search patients...",
+    "availability": "Clinic Availability",
+    "username": "Username",
+    "password": "Password",
+    "invalid": "Invalid credentials"
+  },
+  "superadmin": {
+    "login": "Super Admin Login"
+  },
+  "specialties": {
+    "title": "Our Healthcare Specialties"
+  }
+}

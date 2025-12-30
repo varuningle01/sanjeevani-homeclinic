@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import labels from "../locales/en-us.json";
 
 interface GalleryItem {
   id: string;
@@ -8,8 +8,6 @@ interface GalleryItem {
 }
 
 const GalleryCard = ({ item }: { item: GalleryItem }) => {
-  const { t } = useTranslation();
-
   return (
     <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-4">
       {/* Title */}
@@ -28,7 +26,7 @@ const GalleryCard = ({ item }: { item: GalleryItem }) => {
           />
 
           <span className="absolute bottom-2 left-2 bg-gray-900 text-white text-xs px-3 py-1 rounded">
-            {t("gallery.before")}
+            {labels.gallery.before}
           </span>
         </div>
 
@@ -41,7 +39,7 @@ const GalleryCard = ({ item }: { item: GalleryItem }) => {
           />
 
           <span className="absolute bottom-2 right-2 bg-gray-900 text-white text-xs px-3 py-1 rounded">
-            {t("gallery.after")}
+            {labels.gallery.after}
           </span>
         </div>
       </div>
