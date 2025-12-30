@@ -1,16 +1,19 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { FiPlus, FiSearch, FiUser, FiPhone, FiCalendar } from 'react-icons/fi';
-import type { RootState, AppDispatch } from '../../store/store';
-import { fetchPatients } from '../../store/slices/patientSlice';
-import { formatRelativeTime } from '../utils/dateUtils';
-import CreatePatientModal from '../components/CreatePatientModal';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { FiPlus, FiSearch, FiUser, FiPhone, FiCalendar } from "react-icons/fi";
+import type { RootState, AppDispatch } from "../../store/store";
+import { fetchPatients } from "../../store/slices/patientSlice";
+import { formatRelativeTime } from "../utils/dateUtils";
+import CreatePatientModal from "../components/CreatePatientModal";
+import labels from "../../locales/en-us.json";
 
 const PatientsPage = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { patients, loading } = useSelector((state: RootState) => state.patients);
-  const [searchQuery, setSearchQuery] = useState('');
+  const { patients, loading } = useSelector(
+    (state: RootState) => state.patients
+  );
+  const [searchQuery, setSearchQuery] = useState("");
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
@@ -18,9 +21,10 @@ const PatientsPage = () => {
   }, [dispatch]);
 
   // Filter patients based on search query
-  const filteredPatients = patients.filter(patient =>
-    patient.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    patient.mobileNumber.includes(searchQuery)
+  const filteredPatients = patients.filter(
+    (patient) =>
+      patient.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      patient.mobileNumber.includes(searchQuery)
   );
 
   return (
@@ -28,15 +32,17 @@ const PatientsPage = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Patients</h1>
-          <p className="text-gray-500 mt-1">Manage patient records and medical history</p>
+          <h1 className="text-3xl font-bold text-gray-900">
+            {labels.admin.patients.title}
+          </h1>
+          <p className="text-gray-500 mt-1">{labels.admin.patients.subtitle}</p>
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
           className="flex items-center gap-2 px-4 py-2.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors shadow-sm"
         >
           <FiPlus className="text-lg" />
-          <span className="font-medium">Add Patient</span>
+          <span className="font-medium">{labels.admin.patients.add}</span>
         </button>
       </div>
 
@@ -48,7 +54,9 @@ const PatientsPage = () => {
               <FiUser className="text-2xl" />
             </div>
             <div>
-              <p className="text-xs text-gray-500">Total Patients</p>
+              <p className="text-xs text-gray-500">
+                {labels.admin.patients.total}
+              </p>
               <p className="text-2xl font-bold">{patients.length}</p>
             </div>
           </div>
@@ -60,14 +68,20 @@ const PatientsPage = () => {
               <FiCalendar className="text-2xl" />
             </div>
             <div>
-              <p className="text-xs text-gray-500">New This Month</p>
+              <p className="text-xs text-gray-500">
+                {labels.admin.patients.newThisMonth}
+              </p>
               <p className="text-2xl font-bold">
-                {patients.filter(p => {
-                  const createdDate = new Date(p.createdAt);
-                  const now = new Date();
-                  return createdDate.getMonth() === now.getMonth() &&
-                         createdDate.getFullYear() === now.getFullYear();
-                }).length}
+                {
+                  patients.filter((p) => {
+                    const createdDate = new Date(p.createdAt);
+                    const now = new Date();
+                    return (
+                      createdDate.getMonth() === now.getMonth() &&
+                      createdDate.getFullYear() === now.getFullYear()
+                    );
+                  }).length
+                }
               </p>
             </div>
           </div>
@@ -79,7 +93,9 @@ const PatientsPage = () => {
               <FiPhone className="text-2xl" />
             </div>
             <div>
-              <p className="text-xs text-gray-500">Active Records</p>
+              <p className="text-xs text-gray-500">
+                {labels.admin.patients.activeRecords}
+              </p>
               <p className="text-2xl font-bold">{patients.length}</p>
             </div>
           </div>
@@ -92,7 +108,7 @@ const PatientsPage = () => {
           <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
           <input
             type="text"
-            placeholder="Search by name or mobile number..."
+            placeholder={labels.admin.patients.searchPlaceholder}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
@@ -105,14 +121,18 @@ const PatientsPage = () => {
         {loading ? (
           <div className="p-10 text-center text-gray-500">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto"></div>
-            <p className="mt-4">Loading patients...</p>
+            <p className="mt-4">{labels.admin.common.loading}</p>
           </div>
         ) : filteredPatients.length === 0 ? (
           <div className="p-10 text-center text-gray-500">
             <FiUser className="text-5xl mx-auto mb-4 text-gray-300" />
-            <p className="text-lg font-medium">No patients found</p>
+            <p className="text-lg font-medium">
+              {labels.admin.patients.notFound}
+            </p>
             <p className="text-sm mt-1">
-              {searchQuery ? 'Try a different search term' : 'Add your first patient to get started'}
+              {searchQuery
+                ? labels.admin.patients.notFoundSubtitle
+                : labels.admin.patients.notFoundSubtitle}
             </p>
           </div>
         ) : (
@@ -123,28 +143,31 @@ const PatientsPage = () => {
                 <thead className="bg-gray-50 border-b">
                   <tr>
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      Patient
+                      {labels.admin.patients.table.patient}
                     </th>
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      Age
+                      {labels.admin.patients.table.age}
                     </th>
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      Gender
+                      {labels.admin.patients.table.gender}
                     </th>
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      Mobile
+                      {labels.admin.patients.table.mobile}
                     </th>
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      Last Updated
+                      {labels.admin.patients.table.lastUpdated}
                     </th>
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      Actions
+                      {labels.admin.patients.table.actions}
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {filteredPatients.map((patient) => (
-                    <tr key={patient.id} className="hover:bg-gray-50 transition">
+                    <tr
+                      key={patient.id}
+                      className="hover:bg-gray-50 transition"
+                    >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
                           {patient.photoUrl ? (
@@ -159,14 +182,22 @@ const PatientsPage = () => {
                             </div>
                           )}
                           <div>
-                            <p className="font-medium text-gray-900">{patient.name}</p>
-                            <p className="text-xs text-gray-500">ID: {patient.id.slice(0, 12)}...</p>
+                            <p className="font-medium text-gray-900">
+                              {patient.name}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              ID: {patient.id.slice(0, 12)}...
+                            </p>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 text-gray-700">{patient.age}</td>
-                      <td className="px-6 py-4 text-gray-700">{patient.gender}</td>
-                      <td className="px-6 py-4 text-gray-700">{patient.mobileNumber}</td>
+                      <td className="px-6 py-4 text-gray-700">
+                        {patient.gender}
+                      </td>
+                      <td className="px-6 py-4 text-gray-700">
+                        {patient.mobileNumber}
+                      </td>
                       <td className="px-6 py-4 text-gray-500 text-sm">
                         {formatRelativeTime(patient.updatedAt)}
                       </td>
@@ -175,7 +206,7 @@ const PatientsPage = () => {
                           to={`/admin/patients/${patient.id}`}
                           className="text-teal-600 hover:text-teal-700 font-medium text-sm"
                         >
-                          View Details
+                          {labels.admin.patients.table.viewDetails}
                         </Link>
                       </td>
                     </tr>
@@ -205,14 +236,18 @@ const PatientsPage = () => {
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-gray-900 truncate">{patient.name}</h3>
+                      <h3 className="font-semibold text-gray-900 truncate">
+                        {patient.name}
+                      </h3>
                       <div className="mt-1 space-y-1">
                         <p className="text-sm text-gray-600">
                           {patient.age} years • {patient.gender}
                         </p>
                         <div className="flex items-center gap-1 text-sm text-gray-600">
                           <FiPhone className="text-xs flex-shrink-0" />
-                          <span className="truncate">{patient.mobileNumber}</span>
+                          <span className="truncate">
+                            {patient.mobileNumber}
+                          </span>
                         </div>
                         <p className="text-xs text-gray-500">
                           Updated {formatRelativeTime(patient.updatedAt)}
@@ -220,7 +255,9 @@ const PatientsPage = () => {
                       </div>
                     </div>
                     <div className="flex-shrink-0">
-                      <span className="text-teal-600 text-sm font-medium">View →</span>
+                      <span className="text-teal-600 text-sm font-medium">
+                        {labels.admin.common.view} →
+                      </span>
                     </div>
                   </div>
                 </Link>

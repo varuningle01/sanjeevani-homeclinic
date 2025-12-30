@@ -4,41 +4,8 @@ import Footer from "../components/Footer";
 import { useTenant } from "../context/TenantContext";
 import labels from "../locales/en-us.json";
 import fallbackValues from "../locales/fallback-values.json";
+import { serviceData } from "../data/serviceData";
 
-const serviceData = [
-  {
-    key: "one",
-    image: "https://placehold.co/800?text=Services+Images&font=roboto",
-  },
-  {
-    key: "two",
-    image: "https://placehold.co/800?text=Services+Images&font=roboto",
-  },
-  {
-    key: "three",
-    image: "https://placehold.co/800?text=Services+Images&font=roboto",
-  },
-  {
-    key: "four",
-    image: "https://placehold.co/800?text=Services+Images&font=roboto",
-  },
-  {
-    key: "five",
-    image: "https://placehold.co/800?text=Services+Images&font=roboto",
-  },
-  {
-    key: "six",
-    image: "https://placehold.co/800?text=Services+Images&font=roboto",
-  },
-  {
-    key: "seven",
-    image: "https://placehold.co/800?text=Services+Images&font=roboto",
-  },
-  {
-    key: "eight",
-    image: "https://placehold.co/800?text=Services+Images&font=roboto",
-  },
-];
 function HomePage() {
   const { config } = useTenant();
 

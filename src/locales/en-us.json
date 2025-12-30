@@ -79,14 +79,70 @@
   "admin": {
     "login": "Admin Login",
     "dashboard": "Dashboard",
-    "patients": "Patients",
-    "appointments": "Appointments",
     "logout": "Logout",
     "search": "Search patients...",
     "availability": "Clinic Availability",
     "username": "Username",
     "password": "Password",
-    "invalid": "Invalid credentials"
+    "invalid": "Invalid credentials",
+    "common": {
+      "menu": "Menu",
+      "loading": "Loading...",
+      "actions": "Actions",
+      "edit": "Edit",
+      "delete": "Delete",
+      "view": "View",
+      "back": "Back"
+    },
+    "patients": {
+      "title": "Patients",
+      "subtitle": "Manage patient records and medical history",
+      "add": "Add Patient",
+      "total": "Total Patients",
+      "newThisMonth": "New This Month",
+      "activeRecords": "Active Records",
+      "searchPlaceholder": "Search by name or mobile number...",
+      "notFound": "No patients found",
+      "notFoundSubtitle": "Try a different search term or add a new patient",
+      "table": {
+        "patient": "Patient",
+        "age": "Age",
+        "gender": "Gender",
+        "mobile": "Mobile",
+        "lastUpdated": "Last Updated",
+        "actions": "Actions",
+        "viewDetails": "View Details"
+      }
+    },
+    "appointments": {
+      "title": "Appointments",
+      "subtitle": "Manage and view all patient appointments",
+      "total": "Total Appointments",
+      "today": "Today's Appointments",
+      "upcoming": "Upcoming",
+      "filter": "Filter Appointments",
+      "all": "All Appointments",
+      "filterToday": "Today",
+      "filterTomorrow": "Tomorrow",
+      "notFound": "No Appointments Found",
+      "notFoundAll": "There are no appointments scheduled yet.",
+      "notFoundDate": "No appointments scheduled for the selected date."
+    },
+    "patientDetails": {
+      "title": "Patient Details",
+      "notFound": "Patient not found",
+      "back": "Back to Patients",
+      "age": "Age",
+      "gender": "Gender",
+      "mobile": "Mobile Number",
+      "registered": "Registered",
+      "totalVisits": "Total Visits",
+      "lastVisit": "Last Visit",
+      "noVisits": "No visits yet",
+      "totalReports": "Total Reports",
+      "timeline": "Medical History Timeline",
+      "addVisit": "Add Visit"
+    }
   },
   "superadmin": {
     "login": "Super Admin Login"
