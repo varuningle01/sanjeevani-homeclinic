@@ -7,7 +7,7 @@ import type {
   UpdateVisitData,
   PatientVisit,
   MedicalReport,
-} from '../types/patient.types';
+} from "../types/patient.types";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
@@ -47,7 +47,7 @@ const mapBackendToVisit = (bv: any): PatientVisit => ({
   reports: bv.reports.map((r: any) => ({
     id: r._id,
     visitId: bv._id,
-    fileName: r.fileName || 'Report',
+    fileName: r.fileName || "Report",
     fileType: r.type,
     fileUrl: r.url,
     uploadedAt: r.uploadedAt,
@@ -66,7 +66,7 @@ export const getAllPatients = async (): Promise<Patient[]> => {
     const data = await response.json();
     return data.map(mapBackendToPatient);
   } catch (error) {
-    console.error('Error fetching patients:', error);
+    console.error("Error fetching patients:", error);
     return [];
   }
 };
@@ -74,7 +74,9 @@ export const getAllPatients = async (): Promise<Patient[]> => {
 /**
  * Get single patient with full history
  */
-export const getPatientById = async (id: string): Promise<PatientWithHistory | null> => {
+export const getPatientById = async (
+  id: string
+): Promise<PatientWithHistory | null> => {
   try {
     const [pResponse, vResponse] = await Promise.all([
       fetch(`${API_URL}/patients/${id}`, { headers: getAuthHeader() }),
@@ -88,10 +90,12 @@ export const getPatientById = async (id: string): Promise<PatientWithHistory | n
 
     return {
       ...mapBackendToPatient(patientData),
-      visits: Array.isArray(visitsData) ? visitsData.map(mapBackendToVisit) : [],
+      visits: Array.isArray(visitsData)
+        ? visitsData.map(mapBackendToVisit)
+        : [],
     };
   } catch (error) {
-    console.error('Error fetching patient:', error);
+    console.error("Error fetching patient:", error);
     return null;
   }
 };
@@ -99,32 +103,34 @@ export const getPatientById = async (id: string): Promise<PatientWithHistory | n
 /**
  * Create new patient
  */
-export const createPatient = async (data: CreatePatientData): Promise<Patient> => {
+export const createPatient = async (
+  data: CreatePatientData
+): Promise<Patient> => {
   try {
     const formData = new FormData();
-    formData.append('name', data.name);
-    formData.append('age', data.age.toString());
-    formData.append('gender', data.gender.toLowerCase());
-    formData.append('mobile', data.mobileNumber);
+    formData.append("name", data.name);
+    formData.append("age", data.age.toString());
+    formData.append("gender", data.gender.toLowerCase());
+    formData.append("mobile", data.mobileNumber);
     if (data.photo instanceof File) {
-      formData.append('profilePhoto', data.photo);
+      formData.append("profilePhoto", data.photo);
     }
 
     const response = await fetch(`${API_URL}/patients`, {
-      method: 'POST',
+      method: "POST",
       headers: getAuthHeader(),
       body: formData,
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'Failed to create patient');
+      throw new Error(error.message || "Failed to create patient");
     }
 
     const result = await response.json();
     return mapBackendToPatient(result.patient);
   } catch (error) {
-    console.error('Error creating patient:', error);
+    console.error("Error creating patient:", error);
     throw error;
   }
 };
@@ -132,31 +138,34 @@ export const createPatient = async (data: CreatePatientData): Promise<Patient> =
 /**
  * Update patient details
  */
-export const updatePatient = async (id: string, data: UpdatePatientData): Promise<Patient> => {
+export const updatePatient = async (
+  id: string,
+  data: UpdatePatientData
+): Promise<Patient> => {
   try {
     const formData = new FormData();
-    if (data.name) formData.append('name', data.name);
-    if (data.age) formData.append('age', data.age.toString());
-    if (data.gender) formData.append('gender', data.gender.toLowerCase());
-    if (data.mobileNumber) formData.append('mobile', data.mobileNumber);
+    if (data.name) formData.append("name", data.name);
+    if (data.age) formData.append("age", data.age.toString());
+    if (data.gender) formData.append("gender", data.gender.toLowerCase());
+    if (data.mobileNumber) formData.append("mobile", data.mobileNumber);
     if (data.photo instanceof File) {
-      formData.append('profilePhoto', data.photo);
-    } else if (typeof data.photo === 'string') {
-        // Handle existing photo if needed, though typically we just don't send anything if it didn't change
+      formData.append("profilePhoto", data.photo);
+    } else if (typeof data.photo === "string") {
+      // Handle existing photo if needed, though typically we just don't send anything if it didn't change
     }
 
     const response = await fetch(`${API_URL}/patients/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: getAuthHeader(),
       body: formData,
     });
 
-    if (!response.ok) throw new Error('Failed to update patient');
+    if (!response.ok) throw new Error("Failed to update patient");
 
     const result = await response.json();
     return mapBackendToPatient(result);
   } catch (error) {
-    console.error('Error updating patient:', error);
+    console.error("Error updating patient:", error);
     throw error;
   }
 };
@@ -167,12 +176,12 @@ export const updatePatient = async (id: string, data: UpdatePatientData): Promis
 export const deletePatient = async (id: string): Promise<void> => {
   try {
     const response = await fetch(`${API_URL}/patients/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: getAuthHeader(),
     });
-    if (!response.ok) throw new Error('Failed to delete patient');
+    if (!response.ok) throw new Error("Failed to delete patient");
   } catch (error) {
-    console.error('Error deleting patient:', error);
+    console.error("Error deleting patient:", error);
     throw error;
   }
 };
@@ -180,35 +189,40 @@ export const deletePatient = async (id: string): Promise<void> => {
 /**
  * Add new visit for a patient
  */
-export const addVisit = async (patientId: string, data: AddVisitData): Promise<PatientVisit> => {
+export const addVisit = async (
+  patientId: string,
+  data: AddVisitData
+): Promise<PatientVisit> => {
   try {
     const formData = new FormData();
-    formData.append('visitDate', data.visitDate);
-    if (data.notes) formData.append('notes', data.notes);
-    if (data.bloodPressure) formData.append('bloodPressure', JSON.stringify(data.bloodPressure));
-    if (data.weight) formData.append('weight', data.weight.toString());
-    if (data.temperature) formData.append('temperature', data.temperature.toString());
-    if (data.pulse) formData.append('pulse', data.pulse.toString());
-    if (data.height) formData.append('height', data.height.toString());
+    formData.append("visitDate", data.visitDate);
+    if (data.notes) formData.append("notes", data.notes);
+    if (data.bloodPressure)
+      formData.append("bloodPressure", JSON.stringify(data.bloodPressure));
+    if (data.weight) formData.append("weight", data.weight.toString());
+    if (data.temperature)
+      formData.append("temperature", data.temperature.toString());
+    if (data.pulse) formData.append("pulse", data.pulse.toString());
+    if (data.height) formData.append("height", data.height.toString());
 
     if (data.reports) {
       data.reports.forEach((file) => {
-        formData.append('reports', file);
+        formData.append("reports", file);
       });
     }
 
     const response = await fetch(`${API_URL}/patients/${patientId}/visits`, {
-      method: 'POST',
+      method: "POST",
       headers: getAuthHeader(),
       body: formData,
     });
 
-    if (!response.ok) throw new Error('Failed to add visit');
+    if (!response.ok) throw new Error("Failed to add visit");
 
     const result = await response.json();
     return mapBackendToVisit(result);
   } catch (error) {
-    console.error('Error adding visit:', error);
+    console.error("Error adding visit:", error);
     throw error;
   }
 };
@@ -216,46 +230,54 @@ export const addVisit = async (patientId: string, data: AddVisitData): Promise<P
 /**
  * Update a visit
  */
-export const updateVisit = async (visitId: string, data: UpdateVisitData): Promise<PatientVisit> => {
+export const updateVisit = async (
+  visitId: string,
+  data: UpdateVisitData
+): Promise<PatientVisit> => {
   try {
     const formData = new FormData();
-    if (data.visitDate) formData.append('visitDate', data.visitDate);
-    if (data.notes !== undefined) formData.append('notes', data.notes);
-    if (data.bloodPressure) formData.append('bloodPressure', JSON.stringify(data.bloodPressure));
-    if (data.weight !== undefined) formData.append('weight', data.weight.toString());
-    if (data.temperature !== undefined) formData.append('temperature', data.temperature.toString());
-    if (data.pulse !== undefined) formData.append('pulse', data.pulse.toString());
-    if (data.height !== undefined) formData.append('height', data.height.toString());
+    if (data.visitDate) formData.append("visitDate", data.visitDate);
+    if (data.notes !== undefined) formData.append("notes", data.notes);
+    if (data.bloodPressure)
+      formData.append("bloodPressure", JSON.stringify(data.bloodPressure));
+    if (data.weight !== undefined)
+      formData.append("weight", data.weight.toString());
+    if (data.temperature !== undefined)
+      formData.append("temperature", data.temperature.toString());
+    if (data.pulse !== undefined)
+      formData.append("pulse", data.pulse.toString());
+    if (data.height !== undefined)
+      formData.append("height", data.height.toString());
 
     if (data.existingReports) {
-        // Map MedicalReport back to what backend expects
-        const reportsToKeep = data.existingReports.map(r => ({
-            url: r.fileUrl,
-            type: r.fileType,
-            fileName: r.fileName,
-            _id: r.id
-        }));
-        formData.append('existingReports', JSON.stringify(reportsToKeep));
+      // Map MedicalReport back to what backend expects
+      const reportsToKeep = data.existingReports.map((r) => ({
+        url: r.fileUrl,
+        type: r.fileType,
+        fileName: r.fileName,
+        _id: r.id,
+      }));
+      formData.append("existingReports", JSON.stringify(reportsToKeep));
     }
 
     if (data.reports) {
       data.reports.forEach((file) => {
-        formData.append('reports', file);
+        formData.append("reports", file);
       });
     }
 
     const response = await fetch(`${API_URL}/patients/visits/${visitId}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: getAuthHeader(),
       body: formData,
     });
 
-    if (!response.ok) throw new Error('Failed to update visit');
+    if (!response.ok) throw new Error("Failed to update visit");
 
     const result = await response.json();
     return mapBackendToVisit(result);
   } catch (error) {
-    console.error('Error updating visit:', error);
+    console.error("Error updating visit:", error);
     throw error;
   }
 };
@@ -266,22 +288,12 @@ export const updateVisit = async (visitId: string, data: UpdateVisitData): Promi
 export const deleteVisit = async (visitId: string): Promise<void> => {
   try {
     const response = await fetch(`${API_URL}/patients/visits/${visitId}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: getAuthHeader(),
     });
-    if (!response.ok) throw new Error('Failed to delete visit');
+    if (!response.ok) throw new Error("Failed to delete visit");
   } catch (error) {
-    console.error('Error deleting visit:', error);
+    console.error("Error deleting visit:", error);
     throw error;
   }
-};
-
-// Legacy stubs - no longer needed with new API management but kept for interface signature if needed
-export const uploadReport = async (visitId: string, file: File): Promise<MedicalReport> => {
-    throw new Error('Use updateVisit to add reports');
-};
-export const getPatientVisits = async (patientId: string): Promise<PatientVisit[]> => {
-    const response = await fetch(`${API_URL}/patients/${patientId}/visits`, { headers: getAuthHeader() });
-    const data = await response.json();
-    return data.map(mapBackendToVisit);
 };
